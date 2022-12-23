@@ -1,0 +1,4676 @@
+NAME
+    App::CSVUtils - CLI utilities related to CSV
+
+VERSION
+    This document describes version 0.054 of App::CSVUtils (from Perl
+    distribution App-CSVUtils), released on 2022-12-14.
+
+DESCRIPTION
+    This distribution contains the following CLI utilities:
+
+    *   csv-add-fields
+
+    *   csv-avg
+
+    *   csv-concat
+
+    *   csv-convert-to-hash
+
+    *   csv-csv
+
+    *   csv-delete-fields
+
+    *   csv-dump
+
+    *   csv-each-row
+
+    *   csv-fill-template
+
+    *   csv-freqtable
+
+    *   csv-get-cells
+
+    *   csv-grep
+
+    *   csv-info
+
+    *   csv-list-field-names
+
+    *   csv-lookup-fields
+
+    *   csv-map
+
+    *   csv-munge-field
+
+    *   csv-munge-row
+
+    *   csv-pick
+
+    *   csv-pick-fields
+
+    *   csv-pick-rows
+
+    *   csv-replace-newline
+
+    *   csv-select-fields
+
+    *   csv-select-rows
+
+    *   csv-setop
+
+    *   csv-shuf
+
+    *   csv-shuf-fields
+
+    *   csv-shuf-rows
+
+    *   csv-sort
+
+    *   csv-sort-fields
+
+    *   csv-sort-rows
+
+    *   csv-split
+
+    *   csv-sum
+
+    *   csv-transpose
+
+    *   csv2csv
+
+    *   csv2ltsv
+
+    *   csv2td
+
+    *   csv2tsv
+
+    *   csv2vcf
+
+    *   dump-csv
+
+    *   tsv2csv
+
+FUNCTIONS
+  csv2td
+    Usage:
+
+     csv2td(%args) -> [$status_code, $reason, $payload, \%result_meta]
+
+    Return an enveloped aoaos table data from CSV data.
+
+    *Common notes for the utilities*
+
+    Encoding: The utilities in this module/distribution accept and emit UTF8
+    text.
+
+    This function is not exported.
+
+    Arguments ('*' denotes required arguments):
+
+    *   escape_char => *str*
+
+        Specify character to escape value in field in input CSV, will be
+        passed to Text::CSV_XS.
+
+        Defaults to "\\" (backslash). Overrides "--tsv" option.
+
+    *   filename* => *filename*
+
+        Input CSV file or URL.
+
+        Use "-" to read from stdin, use "clipboard:" to read from clipboard.
+
+    *   header => *bool* (default: 1)
+
+        Whether input CSV has a header row.
+
+        By default ("--header"), the first row of the CSV will be assumed to
+        contain field names (and the second row contains the first data
+        row). When you declare that CSV does not have header row
+        ("--no-header"), the first row of the CSV is assumed to contain the
+        first data row. Fields will be named "field1", "field2", and so on.
+
+    *   quote_char => *str*
+
+        Specify field quote character in input CSV, will be passed to
+        Text::CSV_XS.
+
+        Defaults to """ (double quote). Overrides "--tsv" option.
+
+    *   sep_char => *str*
+
+        Specify field separator character in input CSV, will be passed to
+        Text::CSV_XS.
+
+        Defaults to "," (comma). Overrides "--tsv" option.
+
+    *   tsv => *bool*
+
+        Inform that input file is in TSV (tab-separated) format instead of
+        CSV.
+
+        Overriden by "--sep-char", "--quote-char", "--escape-char" options.
+        If one of those options is specified, then "--tsv" will be ignored.
+
+    Returns an enveloped result (an array).
+
+    First element ($status_code) is an integer containing HTTP-like status
+    code (200 means OK, 4xx caller error, 5xx function error). Second
+    element ($reason) is a string containing error message, or something
+    like "OK" if status is 200. Third element ($payload) is the actual
+    result, but usually not present when enveloped result is an error
+    response ($status_code is not 2xx). Fourth element (%result_meta) is
+    called result metadata and is optional, a hash that contains extra
+    information, much like how HTTP response headers provide additional
+    metadata.
+
+    Return value: (any)
+
+  csv2vcf
+    Usage:
+
+     csv2vcf(%args) -> [$status_code, $reason, $payload, \%result_meta]
+
+    Create a VCF from selected fields of the CSV.
+
+    *Common notes for the utilities*
+
+    Encoding: The utilities in this module/distribution accept and emit UTF8
+    text.
+
+    This function is not exported.
+
+    Arguments ('*' denotes required arguments):
+
+    *   cell_vcf_field => *str*
+
+        Select field to use as VCF CELL field.
+
+    *   email_vcf_field => *str*
+
+        Select field to use as VCF EMAIL field.
+
+    *   escape_char => *str*
+
+        Specify character to escape value in field in input CSV, will be
+        passed to Text::CSV_XS.
+
+        Defaults to "\\" (backslash). Overrides "--tsv" option.
+
+    *   filename* => *filename*
+
+        Input CSV file or URL.
+
+        Use "-" to read from stdin, use "clipboard:" to read from clipboard.
+
+    *   header => *bool* (default: 1)
+
+        Whether input CSV has a header row.
+
+        By default ("--header"), the first row of the CSV will be assumed to
+        contain field names (and the second row contains the first data
+        row). When you declare that CSV does not have header row
+        ("--no-header"), the first row of the CSV is assumed to contain the
+        first data row. Fields will be named "field1", "field2", and so on.
+
+    *   name_vcf_field => *str*
+
+        Select field to use as VCF N (name) field.
+
+    *   quote_char => *str*
+
+        Specify field quote character in input CSV, will be passed to
+        Text::CSV_XS.
+
+        Defaults to """ (double quote). Overrides "--tsv" option.
+
+    *   sep_char => *str*
+
+        Specify field separator character in input CSV, will be passed to
+        Text::CSV_XS.
+
+        Defaults to "," (comma). Overrides "--tsv" option.
+
+    *   tsv => *bool*
+
+        Inform that input file is in TSV (tab-separated) format instead of
+        CSV.
+
+        Overriden by "--sep-char", "--quote-char", "--escape-char" options.
+        If one of those options is specified, then "--tsv" will be ignored.
+
+    Returns an enveloped result (an array).
+
+    First element ($status_code) is an integer containing HTTP-like status
+    code (200 means OK, 4xx caller error, 5xx function error). Second
+    element ($reason) is a string containing error message, or something
+    like "OK" if status is 200. Third element ($payload) is the actual
+    result, but usually not present when enveloped result is an error
+    response ($status_code is not 2xx). Fourth element (%result_meta) is
+    called result metadata and is optional, a hash that contains extra
+    information, much like how HTTP response headers provide additional
+    metadata.
+
+    Return value: (any)
+
+  csv_add_fields
+    Usage:
+
+     csv_add_fields(%args) -> [$status_code, $reason, $payload, \%result_meta]
+
+    Add one or more fields to CSV file.
+
+    Examples:
+
+    *   Add a few new blank fields at the end:
+
+         csv_add_fields(filename => "file.csv", fields => ["field4", "field6", "field5"]);
+
+    *   Add a few new blank fields after a certain field:
+
+         csv_add_fields(
+             filename => "file.csv",
+           fields   => ["field4", "field6", "field5"],
+           after    => "field2"
+         );
+
+    *   Add a new field and set its value:
+
+         csv_add_fields(
+             filename => "file.csv",
+           fields => ["after_tax"],
+           eval => "\$main::row->[5] * 1.11"
+         );
+
+    *   Add a couple new fields and set their values:
+
+         csv_add_fields(
+             filename => "file.csv",
+           fields => ["tax_rate", "after_tax"],
+           eval => "(0.11, \$main::row->[5] * 1.11)"
+         );
+
+    The new fields by default will be added at the end, unless you specify
+    one of "--after" (to put after a certain field), "--before" (to put
+    before a certain field), or "--at" (to put at specific position, 1 means
+    the first field). The new fields will be clustered together though, you
+    currently cannot set the position of each new field. But you can later
+    reorder fields using csv-sort-fields.
+
+    If supplied, your Perl code ("-e") will be called for each row
+    (excluding the header row) and should return the value for the new
+    fields (either as a list or as an arrayref). $_ contains the current row
+    (as arrayref, or if you specify "-H", as a hashref). $main::row is
+    available and contains the current row (always as an arrayref).
+    $main::rownum contains the row number (2 means the first data row). $csv
+    is the Text::CSV_XS object. $main::field_idxs is also available for
+    additional information.
+
+    If "-e" is not supplied, the new fields will be getting the default
+    value of empty string ('').
+
+    *Common notes for the utilities*
+
+    Encoding: The utilities in this module/distribution accept and emit UTF8
+    text.
+
+    This function is not exported.
+
+    Arguments ('*' denotes required arguments):
+
+    *   after => *str*
+
+        Put the new field after specified field.
+
+    *   at => *int*
+
+        Put the new field at specific position (1 means first field).
+
+    *   before => *str*
+
+        Put the new field before specified field.
+
+    *   escape_char => *str*
+
+        Specify character to escape value in field in input CSV, will be
+        passed to Text::CSV_XS.
+
+        Defaults to "\\" (backslash). Overrides "--tsv" option.
+
+    *   eval => *str|code*
+
+        Perl code.
+
+    *   fields* => *array[str]*
+
+        Field names.
+
+    *   filename* => *filename*
+
+        Input CSV file or URL.
+
+        Use "-" to read from stdin, use "clipboard:" to read from clipboard.
+
+    *   hash => *bool*
+
+        Provide row in $_ as hashref instead of arrayref.
+
+    *   header => *bool* (default: 1)
+
+        Whether input CSV has a header row.
+
+        By default ("--header"), the first row of the CSV will be assumed to
+        contain field names (and the second row contains the first data
+        row). When you declare that CSV does not have header row
+        ("--no-header"), the first row of the CSV is assumed to contain the
+        first data row. Fields will be named "field1", "field2", and so on.
+
+    *   output_escape_char => *str*
+
+        Specify character to escape value in field in output CSV, will be
+        passed to Text::CSV_XS.
+
+        This is like "--escape-char" option but for output instead of input.
+
+        Defaults to "\\" (backslash). Overrides "--output-tsv" option.
+
+    *   output_filename => *filename*
+
+        Output filename or URL.
+
+        Use "-" to output to stdout (the default if you don't specify this
+        option), use "clipboard:" to write to clipboard.
+
+    *   output_header => *bool*
+
+        Whether output CSV should have a header row.
+
+        By default, a header row will be output *if* input CSV has header
+        row. Under "--output-header", a header row will be output even if
+        input CSV does not have header row (value will be something like
+        "col0,col1,..."). Under "--no-output-header", header row will *not*
+        be printed even if input CSV has header row. So this option can be
+        used to unconditionally add or remove header row.
+
+    *   output_quote_char => *str*
+
+        Specify field quote character in output CSV, will be passed to
+        Text::CSV_XS.
+
+        This is like "--quote-char" option but for output instead of input.
+
+        Defaults to """ (double quote). Overrides "--output-tsv" option.
+
+    *   output_sep_char => *str*
+
+        Specify field separator character in output CSV, will be passed to
+        Text::CSV_XS.
+
+        This is like "--sep-char" option but for output instead of input.
+
+        Defaults to "," (comma). Overrides "--output-tsv" option.
+
+    *   output_tsv => *bool*
+
+        Inform that output file is TSV (tab-separated) format instead of
+        CSV.
+
+        This is like "--tsv" option but for output instead of input.
+
+        Overriden by "--output-sep-char", "--output-quote-char",
+        "--output-escape-char" options. If one of those options is
+        specified, then "--output-tsv" will be ignored.
+
+    *   overwrite => *bool*
+
+        Whether to override existing output file.
+
+    *   quote_char => *str*
+
+        Specify field quote character in input CSV, will be passed to
+        Text::CSV_XS.
+
+        Defaults to """ (double quote). Overrides "--tsv" option.
+
+    *   sep_char => *str*
+
+        Specify field separator character in input CSV, will be passed to
+        Text::CSV_XS.
+
+        Defaults to "," (comma). Overrides "--tsv" option.
+
+    *   tsv => *bool*
+
+        Inform that input file is in TSV (tab-separated) format instead of
+        CSV.
+
+        Overriden by "--sep-char", "--quote-char", "--escape-char" options.
+        If one of those options is specified, then "--tsv" will be ignored.
+
+    Returns an enveloped result (an array).
+
+    First element ($status_code) is an integer containing HTTP-like status
+    code (200 means OK, 4xx caller error, 5xx function error). Second
+    element ($reason) is a string containing error message, or something
+    like "OK" if status is 200. Third element ($payload) is the actual
+    result, but usually not present when enveloped result is an error
+    response ($status_code is not 2xx). Fourth element (%result_meta) is
+    called result metadata and is optional, a hash that contains extra
+    information, much like how HTTP response headers provide additional
+    metadata.
+
+    Return value: (any)
+
+  csv_avg
+    Usage:
+
+     csv_avg(%args) -> [$status_code, $reason, $payload, \%result_meta]
+
+    Output a summary row which are arithmetic averages of data rows.
+
+    *Common notes for the utilities*
+
+    Encoding: The utilities in this module/distribution accept and emit UTF8
+    text.
+
+    This function is not exported.
+
+    Arguments ('*' denotes required arguments):
+
+    *   escape_char => *str*
+
+        Specify character to escape value in field in input CSV, will be
+        passed to Text::CSV_XS.
+
+        Defaults to "\\" (backslash). Overrides "--tsv" option.
+
+    *   filename* => *filename*
+
+        Input CSV file or URL.
+
+        Use "-" to read from stdin, use "clipboard:" to read from clipboard.
+
+    *   header => *bool* (default: 1)
+
+        Whether input CSV has a header row.
+
+        By default ("--header"), the first row of the CSV will be assumed to
+        contain field names (and the second row contains the first data
+        row). When you declare that CSV does not have header row
+        ("--no-header"), the first row of the CSV is assumed to contain the
+        first data row. Fields will be named "field1", "field2", and so on.
+
+    *   output_escape_char => *str*
+
+        Specify character to escape value in field in output CSV, will be
+        passed to Text::CSV_XS.
+
+        This is like "--escape-char" option but for output instead of input.
+
+        Defaults to "\\" (backslash). Overrides "--output-tsv" option.
+
+    *   output_filename => *filename*
+
+        Output filename or URL.
+
+        Use "-" to output to stdout (the default if you don't specify this
+        option), use "clipboard:" to write to clipboard.
+
+    *   output_header => *bool*
+
+        Whether output CSV should have a header row.
+
+        By default, a header row will be output *if* input CSV has header
+        row. Under "--output-header", a header row will be output even if
+        input CSV does not have header row (value will be something like
+        "col0,col1,..."). Under "--no-output-header", header row will *not*
+        be printed even if input CSV has header row. So this option can be
+        used to unconditionally add or remove header row.
+
+    *   output_quote_char => *str*
+
+        Specify field quote character in output CSV, will be passed to
+        Text::CSV_XS.
+
+        This is like "--quote-char" option but for output instead of input.
+
+        Defaults to """ (double quote). Overrides "--output-tsv" option.
+
+    *   output_sep_char => *str*
+
+        Specify field separator character in output CSV, will be passed to
+        Text::CSV_XS.
+
+        This is like "--sep-char" option but for output instead of input.
+
+        Defaults to "," (comma). Overrides "--output-tsv" option.
+
+    *   output_tsv => *bool*
+
+        Inform that output file is TSV (tab-separated) format instead of
+        CSV.
+
+        This is like "--tsv" option but for output instead of input.
+
+        Overriden by "--output-sep-char", "--output-quote-char",
+        "--output-escape-char" options. If one of those options is
+        specified, then "--output-tsv" will be ignored.
+
+    *   overwrite => *bool*
+
+        Whether to override existing output file.
+
+    *   quote_char => *str*
+
+        Specify field quote character in input CSV, will be passed to
+        Text::CSV_XS.
+
+        Defaults to """ (double quote). Overrides "--tsv" option.
+
+    *   sep_char => *str*
+
+        Specify field separator character in input CSV, will be passed to
+        Text::CSV_XS.
+
+        Defaults to "," (comma). Overrides "--tsv" option.
+
+    *   tsv => *bool*
+
+        Inform that input file is in TSV (tab-separated) format instead of
+        CSV.
+
+        Overriden by "--sep-char", "--quote-char", "--escape-char" options.
+        If one of those options is specified, then "--tsv" will be ignored.
+
+    *   with_data_rows => *bool*
+
+        Whether to also output data rows.
+
+    Returns an enveloped result (an array).
+
+    First element ($status_code) is an integer containing HTTP-like status
+    code (200 means OK, 4xx caller error, 5xx function error). Second
+    element ($reason) is a string containing error message, or something
+    like "OK" if status is 200. Third element ($payload) is the actual
+    result, but usually not present when enveloped result is an error
+    response ($status_code is not 2xx). Fourth element (%result_meta) is
+    called result metadata and is optional, a hash that contains extra
+    information, much like how HTTP response headers provide additional
+    metadata.
+
+    Return value: (any)
+
+  csv_concat
+    Usage:
+
+     csv_concat(%args) -> [$status_code, $reason, $payload, \%result_meta]
+
+    Concatenate several CSV files together, collecting all the fields.
+
+    Example, concatenating this CSV:
+
+     col1,col2
+     1,2
+     3,4
+
+    and:
+
+     col2,col4
+     a,b
+     c,d
+     e,f
+
+    and:
+
+     col3
+     X
+     Y
+
+    will result in:
+
+     col1,col2,col4,col3
+     1,2,
+     3,4,
+     ,a,b
+     ,c,d
+     ,e,f
+     ,,,X
+     ,,,Y
+
+    *Common notes for the utilities*
+
+    Encoding: The utilities in this module/distribution accept and emit UTF8
+    text.
+
+    This function is not exported.
+
+    Arguments ('*' denotes required arguments):
+
+    *   escape_char => *str*
+
+        Specify character to escape value in field in input CSV, will be
+        passed to Text::CSV_XS.
+
+        Defaults to "\\" (backslash). Overrides "--tsv" option.
+
+    *   filenames* => *array[filename]*
+
+        Input CSV files or URLs.
+
+        Use "-" to read from stdin, use "clipboard:" to read from clipboard.
+
+    *   header => *bool* (default: 1)
+
+        Whether input CSV has a header row.
+
+        By default ("--header"), the first row of the CSV will be assumed to
+        contain field names (and the second row contains the first data
+        row). When you declare that CSV does not have header row
+        ("--no-header"), the first row of the CSV is assumed to contain the
+        first data row. Fields will be named "field1", "field2", and so on.
+
+    *   output_escape_char => *str*
+
+        Specify character to escape value in field in output CSV, will be
+        passed to Text::CSV_XS.
+
+        This is like "--escape-char" option but for output instead of input.
+
+        Defaults to "\\" (backslash). Overrides "--output-tsv" option.
+
+    *   output_filename => *filename*
+
+        Output filename or URL.
+
+        Use "-" to output to stdout (the default if you don't specify this
+        option), use "clipboard:" to write to clipboard.
+
+    *   output_header => *bool*
+
+        Whether output CSV should have a header row.
+
+        By default, a header row will be output *if* input CSV has header
+        row. Under "--output-header", a header row will be output even if
+        input CSV does not have header row (value will be something like
+        "col0,col1,..."). Under "--no-output-header", header row will *not*
+        be printed even if input CSV has header row. So this option can be
+        used to unconditionally add or remove header row.
+
+    *   output_quote_char => *str*
+
+        Specify field quote character in output CSV, will be passed to
+        Text::CSV_XS.
+
+        This is like "--quote-char" option but for output instead of input.
+
+        Defaults to """ (double quote). Overrides "--output-tsv" option.
+
+    *   output_sep_char => *str*
+
+        Specify field separator character in output CSV, will be passed to
+        Text::CSV_XS.
+
+        This is like "--sep-char" option but for output instead of input.
+
+        Defaults to "," (comma). Overrides "--output-tsv" option.
+
+    *   output_tsv => *bool*
+
+        Inform that output file is TSV (tab-separated) format instead of
+        CSV.
+
+        This is like "--tsv" option but for output instead of input.
+
+        Overriden by "--output-sep-char", "--output-quote-char",
+        "--output-escape-char" options. If one of those options is
+        specified, then "--output-tsv" will be ignored.
+
+    *   overwrite => *bool*
+
+        Whether to override existing output file.
+
+    *   quote_char => *str*
+
+        Specify field quote character in input CSV, will be passed to
+        Text::CSV_XS.
+
+        Defaults to """ (double quote). Overrides "--tsv" option.
+
+    *   sep_char => *str*
+
+        Specify field separator character in input CSV, will be passed to
+        Text::CSV_XS.
+
+        Defaults to "," (comma). Overrides "--tsv" option.
+
+    *   tsv => *bool*
+
+        Inform that input file is in TSV (tab-separated) format instead of
+        CSV.
+
+        Overriden by "--sep-char", "--quote-char", "--escape-char" options.
+        If one of those options is specified, then "--tsv" will be ignored.
+
+    Returns an enveloped result (an array).
+
+    First element ($status_code) is an integer containing HTTP-like status
+    code (200 means OK, 4xx caller error, 5xx function error). Second
+    element ($reason) is a string containing error message, or something
+    like "OK" if status is 200. Third element ($payload) is the actual
+    result, but usually not present when enveloped result is an error
+    response ($status_code is not 2xx). Fourth element (%result_meta) is
+    called result metadata and is optional, a hash that contains extra
+    information, much like how HTTP response headers provide additional
+    metadata.
+
+    Return value: (any)
+
+  csv_convert_to_hash
+    Usage:
+
+     csv_convert_to_hash(%args) -> [$status_code, $reason, $payload, \%result_meta]
+
+    Return a hash of field names as keys and first row as values.
+
+    *Common notes for the utilities*
+
+    Encoding: The utilities in this module/distribution accept and emit UTF8
+    text.
+
+    This function is not exported.
+
+    Arguments ('*' denotes required arguments):
+
+    *   escape_char => *str*
+
+        Specify character to escape value in field in input CSV, will be
+        passed to Text::CSV_XS.
+
+        Defaults to "\\" (backslash). Overrides "--tsv" option.
+
+    *   filename* => *filename*
+
+        Input CSV file or URL.
+
+        Use "-" to read from stdin, use "clipboard:" to read from clipboard.
+
+    *   header => *bool* (default: 1)
+
+        Whether input CSV has a header row.
+
+        By default ("--header"), the first row of the CSV will be assumed to
+        contain field names (and the second row contains the first data
+        row). When you declare that CSV does not have header row
+        ("--no-header"), the first row of the CSV is assumed to contain the
+        first data row. Fields will be named "field1", "field2", and so on.
+
+    *   quote_char => *str*
+
+        Specify field quote character in input CSV, will be passed to
+        Text::CSV_XS.
+
+        Defaults to """ (double quote). Overrides "--tsv" option.
+
+    *   row_number => *int* (default: 2)
+
+        Row number (e.g. 2 for first data row).
+
+    *   sep_char => *str*
+
+        Specify field separator character in input CSV, will be passed to
+        Text::CSV_XS.
+
+        Defaults to "," (comma). Overrides "--tsv" option.
+
+    *   tsv => *bool*
+
+        Inform that input file is in TSV (tab-separated) format instead of
+        CSV.
+
+        Overriden by "--sep-char", "--quote-char", "--escape-char" options.
+        If one of those options is specified, then "--tsv" will be ignored.
+
+    Returns an enveloped result (an array).
+
+    First element ($status_code) is an integer containing HTTP-like status
+    code (200 means OK, 4xx caller error, 5xx function error). Second
+    element ($reason) is a string containing error message, or something
+    like "OK" if status is 200. Third element ($payload) is the actual
+    result, but usually not present when enveloped result is an error
+    response ($status_code is not 2xx). Fourth element (%result_meta) is
+    called result metadata and is optional, a hash that contains extra
+    information, much like how HTTP response headers provide additional
+    metadata.
+
+    Return value: (any)
+
+  csv_csv
+    Usage:
+
+     csv_csv(%args) -> [$status_code, $reason, $payload, \%result_meta]
+
+    Convert CSV to CSV.
+
+    Why convert CSV to CSV? When you want to change separator/quote/escape
+    character, for one.
+
+    *Common notes for the utilities*
+
+    Encoding: The utilities in this module/distribution accept and emit UTF8
+    text.
+
+    This function is not exported.
+
+    Arguments ('*' denotes required arguments):
+
+    *   escape_char => *str*
+
+        Specify character to escape value in field in input CSV, will be
+        passed to Text::CSV_XS.
+
+        Defaults to "\\" (backslash). Overrides "--tsv" option.
+
+    *   filename* => *filename*
+
+        Input CSV file or URL.
+
+        Use "-" to read from stdin, use "clipboard:" to read from clipboard.
+
+    *   hash => *bool*
+
+        Provide row in $_ as hashref instead of arrayref.
+
+    *   header => *bool* (default: 1)
+
+        Whether input CSV has a header row.
+
+        By default ("--header"), the first row of the CSV will be assumed to
+        contain field names (and the second row contains the first data
+        row). When you declare that CSV does not have header row
+        ("--no-header"), the first row of the CSV is assumed to contain the
+        first data row. Fields will be named "field1", "field2", and so on.
+
+    *   output_escape_char => *str*
+
+        Specify character to escape value in field in output CSV, will be
+        passed to Text::CSV_XS.
+
+        This is like "--escape-char" option but for output instead of input.
+
+        Defaults to "\\" (backslash). Overrides "--output-tsv" option.
+
+    *   output_filename => *filename*
+
+        Output filename or URL.
+
+        Use "-" to output to stdout (the default if you don't specify this
+        option), use "clipboard:" to write to clipboard.
+
+    *   output_header => *bool*
+
+        Whether output CSV should have a header row.
+
+        By default, a header row will be output *if* input CSV has header
+        row. Under "--output-header", a header row will be output even if
+        input CSV does not have header row (value will be something like
+        "col0,col1,..."). Under "--no-output-header", header row will *not*
+        be printed even if input CSV has header row. So this option can be
+        used to unconditionally add or remove header row.
+
+    *   output_quote_char => *str*
+
+        Specify field quote character in output CSV, will be passed to
+        Text::CSV_XS.
+
+        This is like "--quote-char" option but for output instead of input.
+
+        Defaults to """ (double quote). Overrides "--output-tsv" option.
+
+    *   output_sep_char => *str*
+
+        Specify field separator character in output CSV, will be passed to
+        Text::CSV_XS.
+
+        This is like "--sep-char" option but for output instead of input.
+
+        Defaults to "," (comma). Overrides "--output-tsv" option.
+
+    *   output_tsv => *bool*
+
+        Inform that output file is TSV (tab-separated) format instead of
+        CSV.
+
+        This is like "--tsv" option but for output instead of input.
+
+        Overriden by "--output-sep-char", "--output-quote-char",
+        "--output-escape-char" options. If one of those options is
+        specified, then "--output-tsv" will be ignored.
+
+    *   overwrite => *bool*
+
+        Whether to override existing output file.
+
+    *   quote_char => *str*
+
+        Specify field quote character in input CSV, will be passed to
+        Text::CSV_XS.
+
+        Defaults to """ (double quote). Overrides "--tsv" option.
+
+    *   sep_char => *str*
+
+        Specify field separator character in input CSV, will be passed to
+        Text::CSV_XS.
+
+        Defaults to "," (comma). Overrides "--tsv" option.
+
+    *   tsv => *bool*
+
+        Inform that input file is in TSV (tab-separated) format instead of
+        CSV.
+
+        Overriden by "--sep-char", "--quote-char", "--escape-char" options.
+        If one of those options is specified, then "--tsv" will be ignored.
+
+    Returns an enveloped result (an array).
+
+    First element ($status_code) is an integer containing HTTP-like status
+    code (200 means OK, 4xx caller error, 5xx function error). Second
+    element ($reason) is a string containing error message, or something
+    like "OK" if status is 200. Third element ($payload) is the actual
+    result, but usually not present when enveloped result is an error
+    response ($status_code is not 2xx). Fourth element (%result_meta) is
+    called result metadata and is optional, a hash that contains extra
+    information, much like how HTTP response headers provide additional
+    metadata.
+
+    Return value: (any)
+
+  csv_delete_fields
+    Usage:
+
+     csv_delete_fields(%args) -> [$status_code, $reason, $payload, \%result_meta]
+
+    Delete one or more fields from CSV file.
+
+    *Common notes for the utilities*
+
+    Encoding: The utilities in this module/distribution accept and emit UTF8
+    text.
+
+    This function is not exported.
+
+    Arguments ('*' denotes required arguments):
+
+    *   escape_char => *str*
+
+        Specify character to escape value in field in input CSV, will be
+        passed to Text::CSV_XS.
+
+        Defaults to "\\" (backslash). Overrides "--tsv" option.
+
+    *   exclude_field_pat => *re*
+
+        Field regex pattern to exclude, takes precedence over --field-pat.
+
+    *   exclude_fields => *array[str]*
+
+        Field names to exclude, takes precedence over --fields.
+
+    *   filename* => *filename*
+
+        Input CSV file or URL.
+
+        Use "-" to read from stdin, use "clipboard:" to read from clipboard.
+
+    *   header => *bool* (default: 1)
+
+        Whether input CSV has a header row.
+
+        By default ("--header"), the first row of the CSV will be assumed to
+        contain field names (and the second row contains the first data
+        row). When you declare that CSV does not have header row
+        ("--no-header"), the first row of the CSV is assumed to contain the
+        first data row. Fields will be named "field1", "field2", and so on.
+
+    *   ignore_unknown_fields => *bool*
+
+        When unknown fields are specified in --include-field (--field) or
+        --exclude-field options, ignore them instead of throwing an error.
+
+    *   include_field_pat => *re*
+
+        Field regex pattern to select, overidden by --exclude-field-pat.
+
+    *   include_fields => *array[str]*
+
+        Field names to include, takes precedence over --exclude-field-pat.
+
+    *   output_escape_char => *str*
+
+        Specify character to escape value in field in output CSV, will be
+        passed to Text::CSV_XS.
+
+        This is like "--escape-char" option but for output instead of input.
+
+        Defaults to "\\" (backslash). Overrides "--output-tsv" option.
+
+    *   output_filename => *filename*
+
+        Output filename or URL.
+
+        Use "-" to output to stdout (the default if you don't specify this
+        option), use "clipboard:" to write to clipboard.
+
+    *   output_header => *bool*
+
+        Whether output CSV should have a header row.
+
+        By default, a header row will be output *if* input CSV has header
+        row. Under "--output-header", a header row will be output even if
+        input CSV does not have header row (value will be something like
+        "col0,col1,..."). Under "--no-output-header", header row will *not*
+        be printed even if input CSV has header row. So this option can be
+        used to unconditionally add or remove header row.
+
+    *   output_quote_char => *str*
+
+        Specify field quote character in output CSV, will be passed to
+        Text::CSV_XS.
+
+        This is like "--quote-char" option but for output instead of input.
+
+        Defaults to """ (double quote). Overrides "--output-tsv" option.
+
+    *   output_sep_char => *str*
+
+        Specify field separator character in output CSV, will be passed to
+        Text::CSV_XS.
+
+        This is like "--sep-char" option but for output instead of input.
+
+        Defaults to "," (comma). Overrides "--output-tsv" option.
+
+    *   output_tsv => *bool*
+
+        Inform that output file is TSV (tab-separated) format instead of
+        CSV.
+
+        This is like "--tsv" option but for output instead of input.
+
+        Overriden by "--output-sep-char", "--output-quote-char",
+        "--output-escape-char" options. If one of those options is
+        specified, then "--output-tsv" will be ignored.
+
+    *   overwrite => *bool*
+
+        Whether to override existing output file.
+
+    *   quote_char => *str*
+
+        Specify field quote character in input CSV, will be passed to
+        Text::CSV_XS.
+
+        Defaults to """ (double quote). Overrides "--tsv" option.
+
+    *   sep_char => *str*
+
+        Specify field separator character in input CSV, will be passed to
+        Text::CSV_XS.
+
+        Defaults to "," (comma). Overrides "--tsv" option.
+
+    *   show_selected_fields => *true*
+
+        Show selected fields and then immediately exit.
+
+    *   tsv => *bool*
+
+        Inform that input file is in TSV (tab-separated) format instead of
+        CSV.
+
+        Overriden by "--sep-char", "--quote-char", "--escape-char" options.
+        If one of those options is specified, then "--tsv" will be ignored.
+
+    Returns an enveloped result (an array).
+
+    First element ($status_code) is an integer containing HTTP-like status
+    code (200 means OK, 4xx caller error, 5xx function error). Second
+    element ($reason) is a string containing error message, or something
+    like "OK" if status is 200. Third element ($payload) is the actual
+    result, but usually not present when enveloped result is an error
+    response ($status_code is not 2xx). Fourth element (%result_meta) is
+    called result metadata and is optional, a hash that contains extra
+    information, much like how HTTP response headers provide additional
+    metadata.
+
+    Return value: (any)
+
+  csv_dump
+    Usage:
+
+     csv_dump(%args) -> [$status_code, $reason, $payload, \%result_meta]
+
+    Dump CSV as data structure (array of array/hash).
+
+    *Common notes for the utilities*
+
+    Encoding: The utilities in this module/distribution accept and emit UTF8
+    text.
+
+    This function is not exported.
+
+    Arguments ('*' denotes required arguments):
+
+    *   escape_char => *str*
+
+        Specify character to escape value in field in input CSV, will be
+        passed to Text::CSV_XS.
+
+        Defaults to "\\" (backslash). Overrides "--tsv" option.
+
+    *   filename* => *filename*
+
+        Input CSV file or URL.
+
+        Use "-" to read from stdin, use "clipboard:" to read from clipboard.
+
+    *   hash => *bool*
+
+        Provide row in $_ as hashref instead of arrayref.
+
+    *   header => *bool* (default: 1)
+
+        Whether input CSV has a header row.
+
+        By default ("--header"), the first row of the CSV will be assumed to
+        contain field names (and the second row contains the first data
+        row). When you declare that CSV does not have header row
+        ("--no-header"), the first row of the CSV is assumed to contain the
+        first data row. Fields will be named "field1", "field2", and so on.
+
+    *   quote_char => *str*
+
+        Specify field quote character in input CSV, will be passed to
+        Text::CSV_XS.
+
+        Defaults to """ (double quote). Overrides "--tsv" option.
+
+    *   sep_char => *str*
+
+        Specify field separator character in input CSV, will be passed to
+        Text::CSV_XS.
+
+        Defaults to "," (comma). Overrides "--tsv" option.
+
+    *   tsv => *bool*
+
+        Inform that input file is in TSV (tab-separated) format instead of
+        CSV.
+
+        Overriden by "--sep-char", "--quote-char", "--escape-char" options.
+        If one of those options is specified, then "--tsv" will be ignored.
+
+    Returns an enveloped result (an array).
+
+    First element ($status_code) is an integer containing HTTP-like status
+    code (200 means OK, 4xx caller error, 5xx function error). Second
+    element ($reason) is a string containing error message, or something
+    like "OK" if status is 200. Third element ($payload) is the actual
+    result, but usually not present when enveloped result is an error
+    response ($status_code is not 2xx). Fourth element (%result_meta) is
+    called result metadata and is optional, a hash that contains extra
+    information, much like how HTTP response headers provide additional
+    metadata.
+
+    Return value: (any)
+
+  csv_each_row
+    Usage:
+
+     csv_each_row(%args) -> [$status_code, $reason, $payload, \%result_meta]
+
+    Run Perl code for every row.
+
+    Examples:
+
+    *   Delete user data:
+
+         csv_each_row(
+             filename => "users.csv",
+           eval => "\"unlink qq(/home/data/\$_->{username}.dat)\"",
+           hash => 1
+         );
+
+    This is like csv_map, except result of code is not printed.
+
+    *Common notes for the utilities*
+
+    Encoding: The utilities in this module/distribution accept and emit UTF8
+    text.
+
+    This function is not exported.
+
+    Arguments ('*' denotes required arguments):
+
+    *   escape_char => *str*
+
+        Specify character to escape value in field in input CSV, will be
+        passed to Text::CSV_XS.
+
+        Defaults to "\\" (backslash). Overrides "--tsv" option.
+
+    *   eval* => *str|code*
+
+        Perl code.
+
+    *   filename* => *filename*
+
+        Input CSV file or URL.
+
+        Use "-" to read from stdin, use "clipboard:" to read from clipboard.
+
+    *   hash => *bool*
+
+        Provide row in $_ as hashref instead of arrayref.
+
+    *   header => *bool* (default: 1)
+
+        Whether input CSV has a header row.
+
+        By default ("--header"), the first row of the CSV will be assumed to
+        contain field names (and the second row contains the first data
+        row). When you declare that CSV does not have header row
+        ("--no-header"), the first row of the CSV is assumed to contain the
+        first data row. Fields will be named "field1", "field2", and so on.
+
+    *   quote_char => *str*
+
+        Specify field quote character in input CSV, will be passed to
+        Text::CSV_XS.
+
+        Defaults to """ (double quote). Overrides "--tsv" option.
+
+    *   sep_char => *str*
+
+        Specify field separator character in input CSV, will be passed to
+        Text::CSV_XS.
+
+        Defaults to "," (comma). Overrides "--tsv" option.
+
+    *   tsv => *bool*
+
+        Inform that input file is in TSV (tab-separated) format instead of
+        CSV.
+
+        Overriden by "--sep-char", "--quote-char", "--escape-char" options.
+        If one of those options is specified, then "--tsv" will be ignored.
+
+    Returns an enveloped result (an array).
+
+    First element ($status_code) is an integer containing HTTP-like status
+    code (200 means OK, 4xx caller error, 5xx function error). Second
+    element ($reason) is a string containing error message, or something
+    like "OK" if status is 200. Third element ($payload) is the actual
+    result, but usually not present when enveloped result is an error
+    response ($status_code is not 2xx). Fourth element (%result_meta) is
+    called result metadata and is optional, a hash that contains extra
+    information, much like how HTTP response headers provide additional
+    metadata.
+
+    Return value: (any)
+
+  csv_fill_template
+    Usage:
+
+     csv_fill_template(%args) -> [$status_code, $reason, $payload, \%result_meta]
+
+    Substitute template values in a text file with fields from CSV rows.
+
+    Templates are text that contain "[[NAME]]" field placeholders. The field
+    placeholders will be replaced by values from the CSV file. This is a
+    simple alternative to mail-merge. (I first wrote this utility because
+    LibreOffice Writer, as always, has all the annoying bugs; this time, it
+    prevents mail merge from working.)
+
+    *Common notes for the utilities*
+
+    Encoding: The utilities in this module/distribution accept and emit UTF8
+    text.
+
+    This function is not exported.
+
+    Arguments ('*' denotes required arguments):
+
+    *   escape_char => *str*
+
+        Specify character to escape value in field in input CSV, will be
+        passed to Text::CSV_XS.
+
+        Defaults to "\\" (backslash). Overrides "--tsv" option.
+
+    *   filename* => *filename*
+
+        Input CSV file or URL.
+
+        Use "-" to read from stdin, use "clipboard:" to read from clipboard.
+
+    *   header => *bool* (default: 1)
+
+        Whether input CSV has a header row.
+
+        By default ("--header"), the first row of the CSV will be assumed to
+        contain field names (and the second row contains the first data
+        row). When you declare that CSV does not have header row
+        ("--no-header"), the first row of the CSV is assumed to contain the
+        first data row. Fields will be named "field1", "field2", and so on.
+
+    *   output_filename => *filename*
+
+        Output filename or URL.
+
+        Use "-" to output to stdout (the default if you don't specify this
+        option), use "clipboard:" to write to clipboard.
+
+    *   overwrite => *bool*
+
+        Whether to override existing output file.
+
+    *   quote_char => *str*
+
+        Specify field quote character in input CSV, will be passed to
+        Text::CSV_XS.
+
+        Defaults to """ (double quote). Overrides "--tsv" option.
+
+    *   sep_char => *str*
+
+        Specify field separator character in input CSV, will be passed to
+        Text::CSV_XS.
+
+        Defaults to "," (comma). Overrides "--tsv" option.
+
+    *   template_filename* => *filename*
+
+        (No description)
+
+    *   tsv => *bool*
+
+        Inform that input file is in TSV (tab-separated) format instead of
+        CSV.
+
+        Overriden by "--sep-char", "--quote-char", "--escape-char" options.
+        If one of those options is specified, then "--tsv" will be ignored.
+
+    Returns an enveloped result (an array).
+
+    First element ($status_code) is an integer containing HTTP-like status
+    code (200 means OK, 4xx caller error, 5xx function error). Second
+    element ($reason) is a string containing error message, or something
+    like "OK" if status is 200. Third element ($payload) is the actual
+    result, but usually not present when enveloped result is an error
+    response ($status_code is not 2xx). Fourth element (%result_meta) is
+    called result metadata and is optional, a hash that contains extra
+    information, much like how HTTP response headers provide additional
+    metadata.
+
+    Return value: (any)
+
+  csv_freqtable
+    Usage:
+
+     csv_freqtable(%args) -> [$status_code, $reason, $payload, \%result_meta]
+
+    Output a frequency table of values of a specified field in CSV.
+
+    *Common notes for the utilities*
+
+    Encoding: The utilities in this module/distribution accept and emit UTF8
+    text.
+
+    This function is not exported.
+
+    Arguments ('*' denotes required arguments):
+
+    *   escape_char => *str*
+
+        Specify character to escape value in field in input CSV, will be
+        passed to Text::CSV_XS.
+
+        Defaults to "\\" (backslash). Overrides "--tsv" option.
+
+    *   field* => *str*
+
+        Field name.
+
+    *   filename* => *filename*
+
+        Input CSV file or URL.
+
+        Use "-" to read from stdin, use "clipboard:" to read from clipboard.
+
+    *   header => *bool* (default: 1)
+
+        Whether input CSV has a header row.
+
+        By default ("--header"), the first row of the CSV will be assumed to
+        contain field names (and the second row contains the first data
+        row). When you declare that CSV does not have header row
+        ("--no-header"), the first row of the CSV is assumed to contain the
+        first data row. Fields will be named "field1", "field2", and so on.
+
+    *   quote_char => *str*
+
+        Specify field quote character in input CSV, will be passed to
+        Text::CSV_XS.
+
+        Defaults to """ (double quote). Overrides "--tsv" option.
+
+    *   sep_char => *str*
+
+        Specify field separator character in input CSV, will be passed to
+        Text::CSV_XS.
+
+        Defaults to "," (comma). Overrides "--tsv" option.
+
+    *   tsv => *bool*
+
+        Inform that input file is in TSV (tab-separated) format instead of
+        CSV.
+
+        Overriden by "--sep-char", "--quote-char", "--escape-char" options.
+        If one of those options is specified, then "--tsv" will be ignored.
+
+    Returns an enveloped result (an array).
+
+    First element ($status_code) is an integer containing HTTP-like status
+    code (200 means OK, 4xx caller error, 5xx function error). Second
+    element ($reason) is a string containing error message, or something
+    like "OK" if status is 200. Third element ($payload) is the actual
+    result, but usually not present when enveloped result is an error
+    response ($status_code is not 2xx). Fourth element (%result_meta) is
+    called result metadata and is optional, a hash that contains extra
+    information, much like how HTTP response headers provide additional
+    metadata.
+
+    Return value: (any)
+
+  csv_get_cells
+    Usage:
+
+     csv_get_cells(%args) -> [$status_code, $reason, $payload, \%result_meta]
+
+    Get one or more cells from CSV.
+
+    This utility lets you specify "coordinates" of cell locations to
+    extract. Each coordinate is in the form of "<col>,<row>" where "<col>"
+    is the column name or position (zero-based, so 0 is the first column)
+    and "<row>" is the row position (one-based, so 1 is the header row and 2
+    is the first data row).
+
+    *Common notes for the utilities*
+
+    Encoding: The utilities in this module/distribution accept and emit UTF8
+    text.
+
+    This function is not exported.
+
+    Arguments ('*' denotes required arguments):
+
+    *   coordinates => *array[str]*
+
+        List of coordinates, each in the form of <col>,<row> e.g. colname,0
+        or 1,1.
+
+    *   escape_char => *str*
+
+        Specify character to escape value in field in input CSV, will be
+        passed to Text::CSV_XS.
+
+        Defaults to "\\" (backslash). Overrides "--tsv" option.
+
+    *   filename* => *filename*
+
+        Input CSV file or URL.
+
+        Use "-" to read from stdin, use "clipboard:" to read from clipboard.
+
+    *   header => *bool* (default: 1)
+
+        Whether input CSV has a header row.
+
+        By default ("--header"), the first row of the CSV will be assumed to
+        contain field names (and the second row contains the first data
+        row). When you declare that CSV does not have header row
+        ("--no-header"), the first row of the CSV is assumed to contain the
+        first data row. Fields will be named "field1", "field2", and so on.
+
+    *   quote_char => *str*
+
+        Specify field quote character in input CSV, will be passed to
+        Text::CSV_XS.
+
+        Defaults to """ (double quote). Overrides "--tsv" option.
+
+    *   sep_char => *str*
+
+        Specify field separator character in input CSV, will be passed to
+        Text::CSV_XS.
+
+        Defaults to "," (comma). Overrides "--tsv" option.
+
+    *   tsv => *bool*
+
+        Inform that input file is in TSV (tab-separated) format instead of
+        CSV.
+
+        Overriden by "--sep-char", "--quote-char", "--escape-char" options.
+        If one of those options is specified, then "--tsv" will be ignored.
+
+    Returns an enveloped result (an array).
+
+    First element ($status_code) is an integer containing HTTP-like status
+    code (200 means OK, 4xx caller error, 5xx function error). Second
+    element ($reason) is a string containing error message, or something
+    like "OK" if status is 200. Third element ($payload) is the actual
+    result, but usually not present when enveloped result is an error
+    response ($status_code is not 2xx). Fourth element (%result_meta) is
+    called result metadata and is optional, a hash that contains extra
+    information, much like how HTTP response headers provide additional
+    metadata.
+
+    Return value: (any)
+
+  csv_grep
+    Usage:
+
+     csv_grep(%args) -> [$status_code, $reason, $payload, \%result_meta]
+
+    Only output row(s) where Perl expression returns true.
+
+    Examples:
+
+    *   Only show rows where the amount field is divisible by 7:
+
+         csv_grep(filename => "file.csv", eval => "\$_->{amount} % 7 ? 1:0", hash => 1);
+
+    *   Only show rows where date is a Wednesday:
+
+         csv_grep(
+             filename => "file.csv",
+           eval => "BEGIN { use DateTime::Format::Natural; \$parser = DateTime::Format::Natural->new } \$dt = \$parser->parse_datetime(\$_->{date}); \$dt->day_of_week == 3",
+           hash => 1
+         );
+
+    This is like Perl's "grep" performed over rows of CSV. In $_, your Perl
+    code will find the CSV row as an arrayref (or, if you specify "-H", as a
+    hashref). $main::row is also set to the row (always as arrayref).
+    $main::rownum contains the row number (2 means the first data row).
+    $main::csv is the Text::CSV_XS object. $main::field_idxs is also
+    available for additional information.
+
+    Your code is then free to return true or false based on some criteria.
+    Only rows where Perl expression returns true will be included in the
+    result.
+
+    *Common notes for the utilities*
+
+    Encoding: The utilities in this module/distribution accept and emit UTF8
+    text.
+
+    This function is not exported.
+
+    Arguments ('*' denotes required arguments):
+
+    *   escape_char => *str*
+
+        Specify character to escape value in field in input CSV, will be
+        passed to Text::CSV_XS.
+
+        Defaults to "\\" (backslash). Overrides "--tsv" option.
+
+    *   eval* => *str|code*
+
+        Perl code.
+
+    *   filename* => *filename*
+
+        Input CSV file or URL.
+
+        Use "-" to read from stdin, use "clipboard:" to read from clipboard.
+
+    *   hash => *bool*
+
+        Provide row in $_ as hashref instead of arrayref.
+
+    *   header => *bool* (default: 1)
+
+        Whether input CSV has a header row.
+
+        By default ("--header"), the first row of the CSV will be assumed to
+        contain field names (and the second row contains the first data
+        row). When you declare that CSV does not have header row
+        ("--no-header"), the first row of the CSV is assumed to contain the
+        first data row. Fields will be named "field1", "field2", and so on.
+
+    *   output_escape_char => *str*
+
+        Specify character to escape value in field in output CSV, will be
+        passed to Text::CSV_XS.
+
+        This is like "--escape-char" option but for output instead of input.
+
+        Defaults to "\\" (backslash). Overrides "--output-tsv" option.
+
+    *   output_filename => *filename*
+
+        Output filename or URL.
+
+        Use "-" to output to stdout (the default if you don't specify this
+        option), use "clipboard:" to write to clipboard.
+
+    *   output_header => *bool*
+
+        Whether output CSV should have a header row.
+
+        By default, a header row will be output *if* input CSV has header
+        row. Under "--output-header", a header row will be output even if
+        input CSV does not have header row (value will be something like
+        "col0,col1,..."). Under "--no-output-header", header row will *not*
+        be printed even if input CSV has header row. So this option can be
+        used to unconditionally add or remove header row.
+
+    *   output_quote_char => *str*
+
+        Specify field quote character in output CSV, will be passed to
+        Text::CSV_XS.
+
+        This is like "--quote-char" option but for output instead of input.
+
+        Defaults to """ (double quote). Overrides "--output-tsv" option.
+
+    *   output_sep_char => *str*
+
+        Specify field separator character in output CSV, will be passed to
+        Text::CSV_XS.
+
+        This is like "--sep-char" option but for output instead of input.
+
+        Defaults to "," (comma). Overrides "--output-tsv" option.
+
+    *   output_tsv => *bool*
+
+        Inform that output file is TSV (tab-separated) format instead of
+        CSV.
+
+        This is like "--tsv" option but for output instead of input.
+
+        Overriden by "--output-sep-char", "--output-quote-char",
+        "--output-escape-char" options. If one of those options is
+        specified, then "--output-tsv" will be ignored.
+
+    *   overwrite => *bool*
+
+        Whether to override existing output file.
+
+    *   quote_char => *str*
+
+        Specify field quote character in input CSV, will be passed to
+        Text::CSV_XS.
+
+        Defaults to """ (double quote). Overrides "--tsv" option.
+
+    *   sep_char => *str*
+
+        Specify field separator character in input CSV, will be passed to
+        Text::CSV_XS.
+
+        Defaults to "," (comma). Overrides "--tsv" option.
+
+    *   tsv => *bool*
+
+        Inform that input file is in TSV (tab-separated) format instead of
+        CSV.
+
+        Overriden by "--sep-char", "--quote-char", "--escape-char" options.
+        If one of those options is specified, then "--tsv" will be ignored.
+
+    Returns an enveloped result (an array).
+
+    First element ($status_code) is an integer containing HTTP-like status
+    code (200 means OK, 4xx caller error, 5xx function error). Second
+    element ($reason) is a string containing error message, or something
+    like "OK" if status is 200. Third element ($payload) is the actual
+    result, but usually not present when enveloped result is an error
+    response ($status_code is not 2xx). Fourth element (%result_meta) is
+    called result metadata and is optional, a hash that contains extra
+    information, much like how HTTP response headers provide additional
+    metadata.
+
+    Return value: (any)
+
+  csv_info
+    Usage:
+
+     csv_info(%args) -> [$status_code, $reason, $payload, \%result_meta]
+
+    Show information about CSV file (number of rows, fields, etc).
+
+    *Common notes for the utilities*
+
+    Encoding: The utilities in this module/distribution accept and emit UTF8
+    text.
+
+    This function is not exported.
+
+    Arguments ('*' denotes required arguments):
+
+    *   escape_char => *str*
+
+        Specify character to escape value in field in input CSV, will be
+        passed to Text::CSV_XS.
+
+        Defaults to "\\" (backslash). Overrides "--tsv" option.
+
+    *   filename* => *filename*
+
+        Input CSV file or URL.
+
+        Use "-" to read from stdin, use "clipboard:" to read from clipboard.
+
+    *   header => *bool* (default: 1)
+
+        Whether input CSV has a header row.
+
+        By default ("--header"), the first row of the CSV will be assumed to
+        contain field names (and the second row contains the first data
+        row). When you declare that CSV does not have header row
+        ("--no-header"), the first row of the CSV is assumed to contain the
+        first data row. Fields will be named "field1", "field2", and so on.
+
+    *   quote_char => *str*
+
+        Specify field quote character in input CSV, will be passed to
+        Text::CSV_XS.
+
+        Defaults to """ (double quote). Overrides "--tsv" option.
+
+    *   sep_char => *str*
+
+        Specify field separator character in input CSV, will be passed to
+        Text::CSV_XS.
+
+        Defaults to "," (comma). Overrides "--tsv" option.
+
+    *   tsv => *bool*
+
+        Inform that input file is in TSV (tab-separated) format instead of
+        CSV.
+
+        Overriden by "--sep-char", "--quote-char", "--escape-char" options.
+        If one of those options is specified, then "--tsv" will be ignored.
+
+    Returns an enveloped result (an array).
+
+    First element ($status_code) is an integer containing HTTP-like status
+    code (200 means OK, 4xx caller error, 5xx function error). Second
+    element ($reason) is a string containing error message, or something
+    like "OK" if status is 200. Third element ($payload) is the actual
+    result, but usually not present when enveloped result is an error
+    response ($status_code is not 2xx). Fourth element (%result_meta) is
+    called result metadata and is optional, a hash that contains extra
+    information, much like how HTTP response headers provide additional
+    metadata.
+
+    Return value: (any)
+
+  csv_list_field_names
+    Usage:
+
+     csv_list_field_names(%args) -> [$status_code, $reason, $payload, \%result_meta]
+
+    List field names of CSV file.
+
+    *Common notes for the utilities*
+
+    Encoding: The utilities in this module/distribution accept and emit UTF8
+    text.
+
+    This function is not exported.
+
+    Arguments ('*' denotes required arguments):
+
+    *   escape_char => *str*
+
+        Specify character to escape value in field in input CSV, will be
+        passed to Text::CSV_XS.
+
+        Defaults to "\\" (backslash). Overrides "--tsv" option.
+
+    *   filename* => *filename*
+
+        Input CSV file or URL.
+
+        Use "-" to read from stdin, use "clipboard:" to read from clipboard.
+
+    *   header => *bool* (default: 1)
+
+        Whether input CSV has a header row.
+
+        By default ("--header"), the first row of the CSV will be assumed to
+        contain field names (and the second row contains the first data
+        row). When you declare that CSV does not have header row
+        ("--no-header"), the first row of the CSV is assumed to contain the
+        first data row. Fields will be named "field1", "field2", and so on.
+
+    *   quote_char => *str*
+
+        Specify field quote character in input CSV, will be passed to
+        Text::CSV_XS.
+
+        Defaults to """ (double quote). Overrides "--tsv" option.
+
+    *   sep_char => *str*
+
+        Specify field separator character in input CSV, will be passed to
+        Text::CSV_XS.
+
+        Defaults to "," (comma). Overrides "--tsv" option.
+
+    *   tsv => *bool*
+
+        Inform that input file is in TSV (tab-separated) format instead of
+        CSV.
+
+        Overriden by "--sep-char", "--quote-char", "--escape-char" options.
+        If one of those options is specified, then "--tsv" will be ignored.
+
+    Returns an enveloped result (an array).
+
+    First element ($status_code) is an integer containing HTTP-like status
+    code (200 means OK, 4xx caller error, 5xx function error). Second
+    element ($reason) is a string containing error message, or something
+    like "OK" if status is 200. Third element ($payload) is the actual
+    result, but usually not present when enveloped result is an error
+    response ($status_code is not 2xx). Fourth element (%result_meta) is
+    called result metadata and is optional, a hash that contains extra
+    information, much like how HTTP response headers provide additional
+    metadata.
+
+    Return value: (any)
+
+  csv_lookup_fields
+    Usage:
+
+     csv_lookup_fields(%args) -> [$status_code, $reason, $payload, \%result_meta]
+
+    Fill fields of a CSV file from another.
+
+    Example input:
+
+     # report.csv
+     client_id,followup_staff,followup_note,client_email,client_phone
+     101,Jerry,not renewing,
+     299,Jerry,still thinking over,
+     734,Elaine,renewing,
+ 
+     # clients.csv
+     id,name,email,phone
+     101,Andy,andy@example.com,555-2983
+     102,Bob,bob@acme.example.com,555-2523
+     299,Cindy,cindy@example.com,555-7892
+     400,Derek,derek@example.com,555-9018
+     701,Edward,edward@example.com,555-5833
+     734,Felipe,felipe@example.com,555-9067
+
+    To fill up the "client_email" and "client_phone" fields of "report.csv"
+    from "clients.csv", we can use: "--lookup-fields client_id:id
+    --fill-fields client_email:email,client_phone:phone". The result will
+    be:
+
+     client_id,followup_staff,followup_note,client_email,client_phone
+     101,Jerry,not renewing,andy@example.com,555-2983
+     299,Jerry,still thinking over,cindy@example.com,555-7892
+     734,Elaine,renewing,felipe@example.com,555-9067
+
+    *Common notes for the utilities*
+
+    Encoding: The utilities in this module/distribution accept and emit UTF8
+    text.
+
+    This function is not exported.
+
+    Arguments ('*' denotes required arguments):
+
+    *   count => *bool*
+
+        Do not output rows, just report the number of rows filled.
+
+    *   escape_char => *str*
+
+        Specify character to escape value in field in input CSV, will be
+        passed to Text::CSV_XS.
+
+        Defaults to "\\" (backslash). Overrides "--tsv" option.
+
+    *   fill_fields* => *str*
+
+        (No description)
+
+    *   header => *bool* (default: 1)
+
+        Whether input CSV has a header row.
+
+        By default ("--header"), the first row of the CSV will be assumed to
+        contain field names (and the second row contains the first data
+        row). When you declare that CSV does not have header row
+        ("--no-header"), the first row of the CSV is assumed to contain the
+        first data row. Fields will be named "field1", "field2", and so on.
+
+    *   ignore_case => *bool*
+
+        (No description)
+
+    *   lookup_fields* => *str*
+
+        (No description)
+
+    *   output_escape_char => *str*
+
+        Specify character to escape value in field in output CSV, will be
+        passed to Text::CSV_XS.
+
+        This is like "--escape-char" option but for output instead of input.
+
+        Defaults to "\\" (backslash). Overrides "--output-tsv" option.
+
+    *   output_filename => *filename*
+
+        Output filename or URL.
+
+        Use "-" to output to stdout (the default if you don't specify this
+        option), use "clipboard:" to write to clipboard.
+
+    *   output_header => *bool*
+
+        Whether output CSV should have a header row.
+
+        By default, a header row will be output *if* input CSV has header
+        row. Under "--output-header", a header row will be output even if
+        input CSV does not have header row (value will be something like
+        "col0,col1,..."). Under "--no-output-header", header row will *not*
+        be printed even if input CSV has header row. So this option can be
+        used to unconditionally add or remove header row.
+
+    *   output_quote_char => *str*
+
+        Specify field quote character in output CSV, will be passed to
+        Text::CSV_XS.
+
+        This is like "--quote-char" option but for output instead of input.
+
+        Defaults to """ (double quote). Overrides "--output-tsv" option.
+
+    *   output_sep_char => *str*
+
+        Specify field separator character in output CSV, will be passed to
+        Text::CSV_XS.
+
+        This is like "--sep-char" option but for output instead of input.
+
+        Defaults to "," (comma). Overrides "--output-tsv" option.
+
+    *   output_tsv => *bool*
+
+        Inform that output file is TSV (tab-separated) format instead of
+        CSV.
+
+        This is like "--tsv" option but for output instead of input.
+
+        Overriden by "--output-sep-char", "--output-quote-char",
+        "--output-escape-char" options. If one of those options is
+        specified, then "--output-tsv" will be ignored.
+
+    *   overwrite => *bool*
+
+        Whether to override existing output file.
+
+    *   quote_char => *str*
+
+        Specify field quote character in input CSV, will be passed to
+        Text::CSV_XS.
+
+        Defaults to """ (double quote). Overrides "--tsv" option.
+
+    *   sep_char => *str*
+
+        Specify field separator character in input CSV, will be passed to
+        Text::CSV_XS.
+
+        Defaults to "," (comma). Overrides "--tsv" option.
+
+    *   source* => *filename*
+
+        CSV file to lookup values from.
+
+    *   target* => *filename*
+
+        CSV file to fill fields of.
+
+    *   tsv => *bool*
+
+        Inform that input file is in TSV (tab-separated) format instead of
+        CSV.
+
+        Overriden by "--sep-char", "--quote-char", "--escape-char" options.
+        If one of those options is specified, then "--tsv" will be ignored.
+
+    Returns an enveloped result (an array).
+
+    First element ($status_code) is an integer containing HTTP-like status
+    code (200 means OK, 4xx caller error, 5xx function error). Second
+    element ($reason) is a string containing error message, or something
+    like "OK" if status is 200. Third element ($payload) is the actual
+    result, but usually not present when enveloped result is an error
+    response ($status_code is not 2xx). Fourth element (%result_meta) is
+    called result metadata and is optional, a hash that contains extra
+    information, much like how HTTP response headers provide additional
+    metadata.
+
+    Return value: (any)
+
+  csv_map
+    Usage:
+
+     csv_map(%args) -> [$status_code, $reason, $payload, \%result_meta]
+
+    Return result of Perl code for every row.
+
+    Examples:
+
+    *   Create SQL insert statements (escaping is left as an exercise for
+        users):
+
+         csv_map(
+             filename => "file.csv",
+           eval => "\"INSERT INTO mytable (id,amount) VALUES (\$_->{id}, \$_->{amount});\"",
+           hash => 1
+         );
+
+    This is like Perl's "map" performed over rows of CSV. In $_, your Perl
+    code will find the CSV row as an arrayref (or, if you specify "-H", as a
+    hashref). $main::row is also set to the row (always as arrayref).
+    $main::rownum contains the row number (2 means the first data row).
+    $main::csv is the Text::CSV_XS object. $main::field_idxs is also
+    available for additional information.
+
+    Your code is then free to return a string based on some operation
+    against these data. This utility will then print out the resulting
+    string.
+
+    *Common notes for the utilities*
+
+    Encoding: The utilities in this module/distribution accept and emit UTF8
+    text.
+
+    This function is not exported.
+
+    Arguments ('*' denotes required arguments):
+
+    *   add_newline => *bool* (default: 1)
+
+        Whether to make sure each string ends with newline.
+
+    *   escape_char => *str*
+
+        Specify character to escape value in field in input CSV, will be
+        passed to Text::CSV_XS.
+
+        Defaults to "\\" (backslash). Overrides "--tsv" option.
+
+    *   eval* => *str|code*
+
+        Perl code.
+
+    *   filename* => *filename*
+
+        Input CSV file or URL.
+
+        Use "-" to read from stdin, use "clipboard:" to read from clipboard.
+
+    *   hash => *bool*
+
+        Provide row in $_ as hashref instead of arrayref.
+
+    *   header => *bool* (default: 1)
+
+        Whether input CSV has a header row.
+
+        By default ("--header"), the first row of the CSV will be assumed to
+        contain field names (and the second row contains the first data
+        row). When you declare that CSV does not have header row
+        ("--no-header"), the first row of the CSV is assumed to contain the
+        first data row. Fields will be named "field1", "field2", and so on.
+
+    *   output_filename => *filename*
+
+        Output filename or URL.
+
+        Use "-" to output to stdout (the default if you don't specify this
+        option), use "clipboard:" to write to clipboard.
+
+    *   overwrite => *bool*
+
+        Whether to override existing output file.
+
+    *   quote_char => *str*
+
+        Specify field quote character in input CSV, will be passed to
+        Text::CSV_XS.
+
+        Defaults to """ (double quote). Overrides "--tsv" option.
+
+    *   sep_char => *str*
+
+        Specify field separator character in input CSV, will be passed to
+        Text::CSV_XS.
+
+        Defaults to "," (comma). Overrides "--tsv" option.
+
+    *   tsv => *bool*
+
+        Inform that input file is in TSV (tab-separated) format instead of
+        CSV.
+
+        Overriden by "--sep-char", "--quote-char", "--escape-char" options.
+        If one of those options is specified, then "--tsv" will be ignored.
+
+    Returns an enveloped result (an array).
+
+    First element ($status_code) is an integer containing HTTP-like status
+    code (200 means OK, 4xx caller error, 5xx function error). Second
+    element ($reason) is a string containing error message, or something
+    like "OK" if status is 200. Third element ($payload) is the actual
+    result, but usually not present when enveloped result is an error
+    response ($status_code is not 2xx). Fourth element (%result_meta) is
+    called result metadata and is optional, a hash that contains extra
+    information, much like how HTTP response headers provide additional
+    metadata.
+
+    Return value: (any)
+
+  csv_munge_field
+    Usage:
+
+     csv_munge_field(%args) -> [$status_code, $reason, $payload, \%result_meta]
+
+    Munge a field in every row of CSV file with Perl code.
+
+    Perl code (-e) will be called for each row (excluding the header row)
+    and $_ will contain the value of the field, and the Perl code is
+    expected to modify it. $main::row will contain the current row array.
+    $main::rownum contains the row number (2 means the first data row).
+    $main::csv is the Text::CSV_XS object. $main::field_idxs is also
+    available for additional information.
+
+    To munge multiple fields, use csv-munge-row.
+
+    *Common notes for the utilities*
+
+    Encoding: The utilities in this module/distribution accept and emit UTF8
+    text.
+
+    This function is not exported.
+
+    Arguments ('*' denotes required arguments):
+
+    *   escape_char => *str*
+
+        Specify character to escape value in field in input CSV, will be
+        passed to Text::CSV_XS.
+
+        Defaults to "\\" (backslash). Overrides "--tsv" option.
+
+    *   eval* => *str|code*
+
+        Perl code.
+
+    *   field* => *str*
+
+        Field name.
+
+    *   filename* => *filename*
+
+        Input CSV file or URL.
+
+        Use "-" to read from stdin, use "clipboard:" to read from clipboard.
+
+    *   header => *bool* (default: 1)
+
+        Whether input CSV has a header row.
+
+        By default ("--header"), the first row of the CSV will be assumed to
+        contain field names (and the second row contains the first data
+        row). When you declare that CSV does not have header row
+        ("--no-header"), the first row of the CSV is assumed to contain the
+        first data row. Fields will be named "field1", "field2", and so on.
+
+    *   output_escape_char => *str*
+
+        Specify character to escape value in field in output CSV, will be
+        passed to Text::CSV_XS.
+
+        This is like "--escape-char" option but for output instead of input.
+
+        Defaults to "\\" (backslash). Overrides "--output-tsv" option.
+
+    *   output_filename => *filename*
+
+        Output filename or URL.
+
+        Use "-" to output to stdout (the default if you don't specify this
+        option), use "clipboard:" to write to clipboard.
+
+    *   output_header => *bool*
+
+        Whether output CSV should have a header row.
+
+        By default, a header row will be output *if* input CSV has header
+        row. Under "--output-header", a header row will be output even if
+        input CSV does not have header row (value will be something like
+        "col0,col1,..."). Under "--no-output-header", header row will *not*
+        be printed even if input CSV has header row. So this option can be
+        used to unconditionally add or remove header row.
+
+    *   output_quote_char => *str*
+
+        Specify field quote character in output CSV, will be passed to
+        Text::CSV_XS.
+
+        This is like "--quote-char" option but for output instead of input.
+
+        Defaults to """ (double quote). Overrides "--output-tsv" option.
+
+    *   output_sep_char => *str*
+
+        Specify field separator character in output CSV, will be passed to
+        Text::CSV_XS.
+
+        This is like "--sep-char" option but for output instead of input.
+
+        Defaults to "," (comma). Overrides "--output-tsv" option.
+
+    *   output_tsv => *bool*
+
+        Inform that output file is TSV (tab-separated) format instead of
+        CSV.
+
+        This is like "--tsv" option but for output instead of input.
+
+        Overriden by "--output-sep-char", "--output-quote-char",
+        "--output-escape-char" options. If one of those options is
+        specified, then "--output-tsv" will be ignored.
+
+    *   overwrite => *bool*
+
+        Whether to override existing output file.
+
+    *   quote_char => *str*
+
+        Specify field quote character in input CSV, will be passed to
+        Text::CSV_XS.
+
+        Defaults to """ (double quote). Overrides "--tsv" option.
+
+    *   sep_char => *str*
+
+        Specify field separator character in input CSV, will be passed to
+        Text::CSV_XS.
+
+        Defaults to "," (comma). Overrides "--tsv" option.
+
+    *   tsv => *bool*
+
+        Inform that input file is in TSV (tab-separated) format instead of
+        CSV.
+
+        Overriden by "--sep-char", "--quote-char", "--escape-char" options.
+        If one of those options is specified, then "--tsv" will be ignored.
+
+    Returns an enveloped result (an array).
+
+    First element ($status_code) is an integer containing HTTP-like status
+    code (200 means OK, 4xx caller error, 5xx function error). Second
+    element ($reason) is a string containing error message, or something
+    like "OK" if status is 200. Third element ($payload) is the actual
+    result, but usually not present when enveloped result is an error
+    response ($status_code is not 2xx). Fourth element (%result_meta) is
+    called result metadata and is optional, a hash that contains extra
+    information, much like how HTTP response headers provide additional
+    metadata.
+
+    Return value: (any)
+
+  csv_munge_row
+    Usage:
+
+     csv_munge_row(%args) -> [$status_code, $reason, $payload, \%result_meta]
+
+    Munge each data arow of CSV file with Perl code.
+
+    Perl code (-e) will be called for each row (excluding the header row)
+    and $_ will contain the row (arrayref, or hashref if "-H" is specified).
+    The Perl code is expected to modify it.
+
+    Aside from $_, $main::row will contain the current row array.
+    $main::rownum contains the row number (2 means the first data row).
+    $main::csv is the Text::CSV_XS object. $main::field_idxs is also
+    available for additional information.
+
+    The modified $_ will be rendered back to CSV row.
+
+    You can also munge a single field using csv-munge-field.
+
+    You cannot add new fields using this utility. To do so, use
+    csv-add-fields.
+
+    *Common notes for the utilities*
+
+    Encoding: The utilities in this module/distribution accept and emit UTF8
+    text.
+
+    This function is not exported.
+
+    Arguments ('*' denotes required arguments):
+
+    *   escape_char => *str*
+
+        Specify character to escape value in field in input CSV, will be
+        passed to Text::CSV_XS.
+
+        Defaults to "\\" (backslash). Overrides "--tsv" option.
+
+    *   eval* => *str|code*
+
+        Perl code.
+
+    *   filename* => *filename*
+
+        Input CSV file or URL.
+
+        Use "-" to read from stdin, use "clipboard:" to read from clipboard.
+
+    *   hash => *bool*
+
+        Provide row in $_ as hashref instead of arrayref.
+
+    *   header => *bool* (default: 1)
+
+        Whether input CSV has a header row.
+
+        By default ("--header"), the first row of the CSV will be assumed to
+        contain field names (and the second row contains the first data
+        row). When you declare that CSV does not have header row
+        ("--no-header"), the first row of the CSV is assumed to contain the
+        first data row. Fields will be named "field1", "field2", and so on.
+
+    *   output_escape_char => *str*
+
+        Specify character to escape value in field in output CSV, will be
+        passed to Text::CSV_XS.
+
+        This is like "--escape-char" option but for output instead of input.
+
+        Defaults to "\\" (backslash). Overrides "--output-tsv" option.
+
+    *   output_filename => *filename*
+
+        Output filename or URL.
+
+        Use "-" to output to stdout (the default if you don't specify this
+        option), use "clipboard:" to write to clipboard.
+
+    *   output_header => *bool*
+
+        Whether output CSV should have a header row.
+
+        By default, a header row will be output *if* input CSV has header
+        row. Under "--output-header", a header row will be output even if
+        input CSV does not have header row (value will be something like
+        "col0,col1,..."). Under "--no-output-header", header row will *not*
+        be printed even if input CSV has header row. So this option can be
+        used to unconditionally add or remove header row.
+
+    *   output_quote_char => *str*
+
+        Specify field quote character in output CSV, will be passed to
+        Text::CSV_XS.
+
+        This is like "--quote-char" option but for output instead of input.
+
+        Defaults to """ (double quote). Overrides "--output-tsv" option.
+
+    *   output_sep_char => *str*
+
+        Specify field separator character in output CSV, will be passed to
+        Text::CSV_XS.
+
+        This is like "--sep-char" option but for output instead of input.
+
+        Defaults to "," (comma). Overrides "--output-tsv" option.
+
+    *   output_tsv => *bool*
+
+        Inform that output file is TSV (tab-separated) format instead of
+        CSV.
+
+        This is like "--tsv" option but for output instead of input.
+
+        Overriden by "--output-sep-char", "--output-quote-char",
+        "--output-escape-char" options. If one of those options is
+        specified, then "--output-tsv" will be ignored.
+
+    *   overwrite => *bool*
+
+        Whether to override existing output file.
+
+    *   quote_char => *str*
+
+        Specify field quote character in input CSV, will be passed to
+        Text::CSV_XS.
+
+        Defaults to """ (double quote). Overrides "--tsv" option.
+
+    *   sep_char => *str*
+
+        Specify field separator character in input CSV, will be passed to
+        Text::CSV_XS.
+
+        Defaults to "," (comma). Overrides "--tsv" option.
+
+    *   tsv => *bool*
+
+        Inform that input file is in TSV (tab-separated) format instead of
+        CSV.
+
+        Overriden by "--sep-char", "--quote-char", "--escape-char" options.
+        If one of those options is specified, then "--tsv" will be ignored.
+
+    Returns an enveloped result (an array).
+
+    First element ($status_code) is an integer containing HTTP-like status
+    code (200 means OK, 4xx caller error, 5xx function error). Second
+    element ($reason) is a string containing error message, or something
+    like "OK" if status is 200. Third element ($payload) is the actual
+    result, but usually not present when enveloped result is an error
+    response ($status_code is not 2xx). Fourth element (%result_meta) is
+    called result metadata and is optional, a hash that contains extra
+    information, much like how HTTP response headers provide additional
+    metadata.
+
+    Return value: (any)
+
+  csv_pick_fields
+    Usage:
+
+     csv_pick_fields(%args) -> [$status_code, $reason, $payload, \%result_meta]
+
+    Select one or more random fields from CSV.
+
+    *Common notes for the utilities*
+
+    Encoding: The utilities in this module/distribution accept and emit UTF8
+    text.
+
+    This function is not exported.
+
+    Arguments ('*' denotes required arguments):
+
+    *   escape_char => *str*
+
+        Specify character to escape value in field in input CSV, will be
+        passed to Text::CSV_XS.
+
+        Defaults to "\\" (backslash). Overrides "--tsv" option.
+
+    *   filename* => *filename*
+
+        Input CSV file or URL.
+
+        Use "-" to read from stdin, use "clipboard:" to read from clipboard.
+
+    *   header => *bool* (default: 1)
+
+        Whether input CSV has a header row.
+
+        By default ("--header"), the first row of the CSV will be assumed to
+        contain field names (and the second row contains the first data
+        row). When you declare that CSV does not have header row
+        ("--no-header"), the first row of the CSV is assumed to contain the
+        first data row. Fields will be named "field1", "field2", and so on.
+
+    *   num => *posint* (default: 1)
+
+        Number of fields to pick.
+
+    *   output_escape_char => *str*
+
+        Specify character to escape value in field in output CSV, will be
+        passed to Text::CSV_XS.
+
+        This is like "--escape-char" option but for output instead of input.
+
+        Defaults to "\\" (backslash). Overrides "--output-tsv" option.
+
+    *   output_filename => *filename*
+
+        Output filename or URL.
+
+        Use "-" to output to stdout (the default if you don't specify this
+        option), use "clipboard:" to write to clipboard.
+
+    *   output_header => *bool*
+
+        Whether output CSV should have a header row.
+
+        By default, a header row will be output *if* input CSV has header
+        row. Under "--output-header", a header row will be output even if
+        input CSV does not have header row (value will be something like
+        "col0,col1,..."). Under "--no-output-header", header row will *not*
+        be printed even if input CSV has header row. So this option can be
+        used to unconditionally add or remove header row.
+
+    *   output_quote_char => *str*
+
+        Specify field quote character in output CSV, will be passed to
+        Text::CSV_XS.
+
+        This is like "--quote-char" option but for output instead of input.
+
+        Defaults to """ (double quote). Overrides "--output-tsv" option.
+
+    *   output_sep_char => *str*
+
+        Specify field separator character in output CSV, will be passed to
+        Text::CSV_XS.
+
+        This is like "--sep-char" option but for output instead of input.
+
+        Defaults to "," (comma). Overrides "--output-tsv" option.
+
+    *   output_tsv => *bool*
+
+        Inform that output file is TSV (tab-separated) format instead of
+        CSV.
+
+        This is like "--tsv" option but for output instead of input.
+
+        Overriden by "--output-sep-char", "--output-quote-char",
+        "--output-escape-char" options. If one of those options is
+        specified, then "--output-tsv" will be ignored.
+
+    *   overwrite => *bool*
+
+        Whether to override existing output file.
+
+    *   quote_char => *str*
+
+        Specify field quote character in input CSV, will be passed to
+        Text::CSV_XS.
+
+        Defaults to """ (double quote). Overrides "--tsv" option.
+
+    *   sep_char => *str*
+
+        Specify field separator character in input CSV, will be passed to
+        Text::CSV_XS.
+
+        Defaults to "," (comma). Overrides "--tsv" option.
+
+    *   tsv => *bool*
+
+        Inform that input file is in TSV (tab-separated) format instead of
+        CSV.
+
+        Overriden by "--sep-char", "--quote-char", "--escape-char" options.
+        If one of those options is specified, then "--tsv" will be ignored.
+
+    Returns an enveloped result (an array).
+
+    First element ($status_code) is an integer containing HTTP-like status
+    code (200 means OK, 4xx caller error, 5xx function error). Second
+    element ($reason) is a string containing error message, or something
+    like "OK" if status is 200. Third element ($payload) is the actual
+    result, but usually not present when enveloped result is an error
+    response ($status_code is not 2xx). Fourth element (%result_meta) is
+    called result metadata and is optional, a hash that contains extra
+    information, much like how HTTP response headers provide additional
+    metadata.
+
+    Return value: (any)
+
+  csv_pick_rows
+    Usage:
+
+     csv_pick_rows(%args) -> [$status_code, $reason, $payload, \%result_meta]
+
+    Return one or more random rows from CSV.
+
+    *Common notes for the utilities*
+
+    Encoding: The utilities in this module/distribution accept and emit UTF8
+    text.
+
+    This function is not exported.
+
+    Arguments ('*' denotes required arguments):
+
+    *   escape_char => *str*
+
+        Specify character to escape value in field in input CSV, will be
+        passed to Text::CSV_XS.
+
+        Defaults to "\\" (backslash). Overrides "--tsv" option.
+
+    *   filename* => *filename*
+
+        Input CSV file or URL.
+
+        Use "-" to read from stdin, use "clipboard:" to read from clipboard.
+
+    *   header => *bool* (default: 1)
+
+        Whether input CSV has a header row.
+
+        By default ("--header"), the first row of the CSV will be assumed to
+        contain field names (and the second row contains the first data
+        row). When you declare that CSV does not have header row
+        ("--no-header"), the first row of the CSV is assumed to contain the
+        first data row. Fields will be named "field1", "field2", and so on.
+
+    *   num => *posint* (default: 1)
+
+        Number of rows to pick.
+
+    *   output_escape_char => *str*
+
+        Specify character to escape value in field in output CSV, will be
+        passed to Text::CSV_XS.
+
+        This is like "--escape-char" option but for output instead of input.
+
+        Defaults to "\\" (backslash). Overrides "--output-tsv" option.
+
+    *   output_filename => *filename*
+
+        Output filename or URL.
+
+        Use "-" to output to stdout (the default if you don't specify this
+        option), use "clipboard:" to write to clipboard.
+
+    *   output_header => *bool*
+
+        Whether output CSV should have a header row.
+
+        By default, a header row will be output *if* input CSV has header
+        row. Under "--output-header", a header row will be output even if
+        input CSV does not have header row (value will be something like
+        "col0,col1,..."). Under "--no-output-header", header row will *not*
+        be printed even if input CSV has header row. So this option can be
+        used to unconditionally add or remove header row.
+
+    *   output_quote_char => *str*
+
+        Specify field quote character in output CSV, will be passed to
+        Text::CSV_XS.
+
+        This is like "--quote-char" option but for output instead of input.
+
+        Defaults to """ (double quote). Overrides "--output-tsv" option.
+
+    *   output_sep_char => *str*
+
+        Specify field separator character in output CSV, will be passed to
+        Text::CSV_XS.
+
+        This is like "--sep-char" option but for output instead of input.
+
+        Defaults to "," (comma). Overrides "--output-tsv" option.
+
+    *   output_tsv => *bool*
+
+        Inform that output file is TSV (tab-separated) format instead of
+        CSV.
+
+        This is like "--tsv" option but for output instead of input.
+
+        Overriden by "--output-sep-char", "--output-quote-char",
+        "--output-escape-char" options. If one of those options is
+        specified, then "--output-tsv" will be ignored.
+
+    *   overwrite => *bool*
+
+        Whether to override existing output file.
+
+    *   quote_char => *str*
+
+        Specify field quote character in input CSV, will be passed to
+        Text::CSV_XS.
+
+        Defaults to """ (double quote). Overrides "--tsv" option.
+
+    *   sep_char => *str*
+
+        Specify field separator character in input CSV, will be passed to
+        Text::CSV_XS.
+
+        Defaults to "," (comma). Overrides "--tsv" option.
+
+    *   tsv => *bool*
+
+        Inform that input file is in TSV (tab-separated) format instead of
+        CSV.
+
+        Overriden by "--sep-char", "--quote-char", "--escape-char" options.
+        If one of those options is specified, then "--tsv" will be ignored.
+
+    Returns an enveloped result (an array).
+
+    First element ($status_code) is an integer containing HTTP-like status
+    code (200 means OK, 4xx caller error, 5xx function error). Second
+    element ($reason) is a string containing error message, or something
+    like "OK" if status is 200. Third element ($payload) is the actual
+    result, but usually not present when enveloped result is an error
+    response ($status_code is not 2xx). Fourth element (%result_meta) is
+    called result metadata and is optional, a hash that contains extra
+    information, much like how HTTP response headers provide additional
+    metadata.
+
+    Return value: (any)
+
+  csv_replace_newline
+    Usage:
+
+     csv_replace_newline(%args) -> [$status_code, $reason, $payload, \%result_meta]
+
+    Replace newlines in CSV values.
+
+    Some CSV parsers or applications cannot handle multiline CSV values.
+    This utility can be used to convert the newline to something else. There
+    are a few choices: replace newline with space ("--with-space", the
+    default), remove newline ("--with-nothing"), replace with encoded
+    representation ("--with-backslash-n"), or with characters of your choice
+    ("--with 'blah'").
+
+    *Common notes for the utilities*
+
+    Encoding: The utilities in this module/distribution accept and emit UTF8
+    text.
+
+    This function is not exported.
+
+    Arguments ('*' denotes required arguments):
+
+    *   escape_char => *str*
+
+        Specify character to escape value in field in input CSV, will be
+        passed to Text::CSV_XS.
+
+        Defaults to "\\" (backslash). Overrides "--tsv" option.
+
+    *   filename* => *filename*
+
+        Input CSV file or URL.
+
+        Use "-" to read from stdin, use "clipboard:" to read from clipboard.
+
+    *   header => *bool* (default: 1)
+
+        Whether input CSV has a header row.
+
+        By default ("--header"), the first row of the CSV will be assumed to
+        contain field names (and the second row contains the first data
+        row). When you declare that CSV does not have header row
+        ("--no-header"), the first row of the CSV is assumed to contain the
+        first data row. Fields will be named "field1", "field2", and so on.
+
+    *   output_escape_char => *str*
+
+        Specify character to escape value in field in output CSV, will be
+        passed to Text::CSV_XS.
+
+        This is like "--escape-char" option but for output instead of input.
+
+        Defaults to "\\" (backslash). Overrides "--output-tsv" option.
+
+    *   output_filename => *filename*
+
+        Output filename or URL.
+
+        Use "-" to output to stdout (the default if you don't specify this
+        option), use "clipboard:" to write to clipboard.
+
+    *   output_header => *bool*
+
+        Whether output CSV should have a header row.
+
+        By default, a header row will be output *if* input CSV has header
+        row. Under "--output-header", a header row will be output even if
+        input CSV does not have header row (value will be something like
+        "col0,col1,..."). Under "--no-output-header", header row will *not*
+        be printed even if input CSV has header row. So this option can be
+        used to unconditionally add or remove header row.
+
+    *   output_quote_char => *str*
+
+        Specify field quote character in output CSV, will be passed to
+        Text::CSV_XS.
+
+        This is like "--quote-char" option but for output instead of input.
+
+        Defaults to """ (double quote). Overrides "--output-tsv" option.
+
+    *   output_sep_char => *str*
+
+        Specify field separator character in output CSV, will be passed to
+        Text::CSV_XS.
+
+        This is like "--sep-char" option but for output instead of input.
+
+        Defaults to "," (comma). Overrides "--output-tsv" option.
+
+    *   output_tsv => *bool*
+
+        Inform that output file is TSV (tab-separated) format instead of
+        CSV.
+
+        This is like "--tsv" option but for output instead of input.
+
+        Overriden by "--output-sep-char", "--output-quote-char",
+        "--output-escape-char" options. If one of those options is
+        specified, then "--output-tsv" will be ignored.
+
+    *   overwrite => *bool*
+
+        Whether to override existing output file.
+
+    *   quote_char => *str*
+
+        Specify field quote character in input CSV, will be passed to
+        Text::CSV_XS.
+
+        Defaults to """ (double quote). Overrides "--tsv" option.
+
+    *   sep_char => *str*
+
+        Specify field separator character in input CSV, will be passed to
+        Text::CSV_XS.
+
+        Defaults to "," (comma). Overrides "--tsv" option.
+
+    *   tsv => *bool*
+
+        Inform that input file is in TSV (tab-separated) format instead of
+        CSV.
+
+        Overriden by "--sep-char", "--quote-char", "--escape-char" options.
+        If one of those options is specified, then "--tsv" will be ignored.
+
+    *   with => *str* (default: " ")
+
+        (No description)
+
+    Returns an enveloped result (an array).
+
+    First element ($status_code) is an integer containing HTTP-like status
+    code (200 means OK, 4xx caller error, 5xx function error). Second
+    element ($reason) is a string containing error message, or something
+    like "OK" if status is 200. Third element ($payload) is the actual
+    result, but usually not present when enveloped result is an error
+    response ($status_code is not 2xx). Fourth element (%result_meta) is
+    called result metadata and is optional, a hash that contains extra
+    information, much like how HTTP response headers provide additional
+    metadata.
+
+    Return value: (any)
+
+  csv_select_fields
+    Usage:
+
+     csv_select_fields(%args) -> [$status_code, $reason, $payload, \%result_meta]
+
+    Only output selected field(s).
+
+    *Common notes for the utilities*
+
+    Encoding: The utilities in this module/distribution accept and emit UTF8
+    text.
+
+    This function is not exported.
+
+    Arguments ('*' denotes required arguments):
+
+    *   escape_char => *str*
+
+        Specify character to escape value in field in input CSV, will be
+        passed to Text::CSV_XS.
+
+        Defaults to "\\" (backslash). Overrides "--tsv" option.
+
+    *   exclude_field_pat => *re*
+
+        Field regex pattern to exclude, takes precedence over --field-pat.
+
+    *   exclude_fields => *array[str]*
+
+        Field names to exclude, takes precedence over --fields.
+
+    *   filename* => *filename*
+
+        Input CSV file or URL.
+
+        Use "-" to read from stdin, use "clipboard:" to read from clipboard.
+
+    *   header => *bool* (default: 1)
+
+        Whether input CSV has a header row.
+
+        By default ("--header"), the first row of the CSV will be assumed to
+        contain field names (and the second row contains the first data
+        row). When you declare that CSV does not have header row
+        ("--no-header"), the first row of the CSV is assumed to contain the
+        first data row. Fields will be named "field1", "field2", and so on.
+
+    *   ignore_unknown_fields => *bool*
+
+        When unknown fields are specified in --include-field (--field) or
+        --exclude-field options, ignore them instead of throwing an error.
+
+    *   include_field_pat => *re*
+
+        Field regex pattern to select, overidden by --exclude-field-pat.
+
+    *   include_fields => *array[str]*
+
+        Field names to include, takes precedence over --exclude-field-pat.
+
+    *   output_escape_char => *str*
+
+        Specify character to escape value in field in output CSV, will be
+        passed to Text::CSV_XS.
+
+        This is like "--escape-char" option but for output instead of input.
+
+        Defaults to "\\" (backslash). Overrides "--output-tsv" option.
+
+    *   output_filename => *filename*
+
+        Output filename or URL.
+
+        Use "-" to output to stdout (the default if you don't specify this
+        option), use "clipboard:" to write to clipboard.
+
+    *   output_header => *bool*
+
+        Whether output CSV should have a header row.
+
+        By default, a header row will be output *if* input CSV has header
+        row. Under "--output-header", a header row will be output even if
+        input CSV does not have header row (value will be something like
+        "col0,col1,..."). Under "--no-output-header", header row will *not*
+        be printed even if input CSV has header row. So this option can be
+        used to unconditionally add or remove header row.
+
+    *   output_quote_char => *str*
+
+        Specify field quote character in output CSV, will be passed to
+        Text::CSV_XS.
+
+        This is like "--quote-char" option but for output instead of input.
+
+        Defaults to """ (double quote). Overrides "--output-tsv" option.
+
+    *   output_sep_char => *str*
+
+        Specify field separator character in output CSV, will be passed to
+        Text::CSV_XS.
+
+        This is like "--sep-char" option but for output instead of input.
+
+        Defaults to "," (comma). Overrides "--output-tsv" option.
+
+    *   output_tsv => *bool*
+
+        Inform that output file is TSV (tab-separated) format instead of
+        CSV.
+
+        This is like "--tsv" option but for output instead of input.
+
+        Overriden by "--output-sep-char", "--output-quote-char",
+        "--output-escape-char" options. If one of those options is
+        specified, then "--output-tsv" will be ignored.
+
+    *   overwrite => *bool*
+
+        Whether to override existing output file.
+
+    *   quote_char => *str*
+
+        Specify field quote character in input CSV, will be passed to
+        Text::CSV_XS.
+
+        Defaults to """ (double quote). Overrides "--tsv" option.
+
+    *   sep_char => *str*
+
+        Specify field separator character in input CSV, will be passed to
+        Text::CSV_XS.
+
+        Defaults to "," (comma). Overrides "--tsv" option.
+
+    *   show_selected_fields => *true*
+
+        Show selected fields and then immediately exit.
+
+    *   tsv => *bool*
+
+        Inform that input file is in TSV (tab-separated) format instead of
+        CSV.
+
+        Overriden by "--sep-char", "--quote-char", "--escape-char" options.
+        If one of those options is specified, then "--tsv" will be ignored.
+
+    Returns an enveloped result (an array).
+
+    First element ($status_code) is an integer containing HTTP-like status
+    code (200 means OK, 4xx caller error, 5xx function error). Second
+    element ($reason) is a string containing error message, or something
+    like "OK" if status is 200. Third element ($payload) is the actual
+    result, but usually not present when enveloped result is an error
+    response ($status_code is not 2xx). Fourth element (%result_meta) is
+    called result metadata and is optional, a hash that contains extra
+    information, much like how HTTP response headers provide additional
+    metadata.
+
+    Return value: (any)
+
+  csv_select_rows
+    Usage:
+
+     csv_select_rows(%args) -> [$status_code, $reason, $payload, \%result_meta]
+
+    Only output specified row(s).
+
+    *Common notes for the utilities*
+
+    Encoding: The utilities in this module/distribution accept and emit UTF8
+    text.
+
+    This function is not exported.
+
+    Arguments ('*' denotes required arguments):
+
+    *   escape_char => *str*
+
+        Specify character to escape value in field in input CSV, will be
+        passed to Text::CSV_XS.
+
+        Defaults to "\\" (backslash). Overrides "--tsv" option.
+
+    *   filename* => *filename*
+
+        Input CSV file or URL.
+
+        Use "-" to read from stdin, use "clipboard:" to read from clipboard.
+
+    *   header => *bool* (default: 1)
+
+        Whether input CSV has a header row.
+
+        By default ("--header"), the first row of the CSV will be assumed to
+        contain field names (and the second row contains the first data
+        row). When you declare that CSV does not have header row
+        ("--no-header"), the first row of the CSV is assumed to contain the
+        first data row. Fields will be named "field1", "field2", and so on.
+
+    *   output_escape_char => *str*
+
+        Specify character to escape value in field in output CSV, will be
+        passed to Text::CSV_XS.
+
+        This is like "--escape-char" option but for output instead of input.
+
+        Defaults to "\\" (backslash). Overrides "--output-tsv" option.
+
+    *   output_filename => *filename*
+
+        Output filename or URL.
+
+        Use "-" to output to stdout (the default if you don't specify this
+        option), use "clipboard:" to write to clipboard.
+
+    *   output_header => *bool*
+
+        Whether output CSV should have a header row.
+
+        By default, a header row will be output *if* input CSV has header
+        row. Under "--output-header", a header row will be output even if
+        input CSV does not have header row (value will be something like
+        "col0,col1,..."). Under "--no-output-header", header row will *not*
+        be printed even if input CSV has header row. So this option can be
+        used to unconditionally add or remove header row.
+
+    *   output_quote_char => *str*
+
+        Specify field quote character in output CSV, will be passed to
+        Text::CSV_XS.
+
+        This is like "--quote-char" option but for output instead of input.
+
+        Defaults to """ (double quote). Overrides "--output-tsv" option.
+
+    *   output_sep_char => *str*
+
+        Specify field separator character in output CSV, will be passed to
+        Text::CSV_XS.
+
+        This is like "--sep-char" option but for output instead of input.
+
+        Defaults to "," (comma). Overrides "--output-tsv" option.
+
+    *   output_tsv => *bool*
+
+        Inform that output file is TSV (tab-separated) format instead of
+        CSV.
+
+        This is like "--tsv" option but for output instead of input.
+
+        Overriden by "--output-sep-char", "--output-quote-char",
+        "--output-escape-char" options. If one of those options is
+        specified, then "--output-tsv" will be ignored.
+
+    *   overwrite => *bool*
+
+        Whether to override existing output file.
+
+    *   quote_char => *str*
+
+        Specify field quote character in input CSV, will be passed to
+        Text::CSV_XS.
+
+        Defaults to """ (double quote). Overrides "--tsv" option.
+
+    *   row_spec* => *str*
+
+        Row number (e.g. 2 for first data row), range (2-7), or
+        comma-separated list of such (2-7,10,20-23).
+
+    *   sep_char => *str*
+
+        Specify field separator character in input CSV, will be passed to
+        Text::CSV_XS.
+
+        Defaults to "," (comma). Overrides "--tsv" option.
+
+    *   tsv => *bool*
+
+        Inform that input file is in TSV (tab-separated) format instead of
+        CSV.
+
+        Overriden by "--sep-char", "--quote-char", "--escape-char" options.
+        If one of those options is specified, then "--tsv" will be ignored.
+
+    Returns an enveloped result (an array).
+
+    First element ($status_code) is an integer containing HTTP-like status
+    code (200 means OK, 4xx caller error, 5xx function error). Second
+    element ($reason) is a string containing error message, or something
+    like "OK" if status is 200. Third element ($payload) is the actual
+    result, but usually not present when enveloped result is an error
+    response ($status_code is not 2xx). Fourth element (%result_meta) is
+    called result metadata and is optional, a hash that contains extra
+    information, much like how HTTP response headers provide additional
+    metadata.
+
+    Return value: (any)
+
+  csv_setop
+    Usage:
+
+     csv_setop(%args) -> [$status_code, $reason, $payload, \%result_meta]
+
+    Set operation (union/unique concatenation of rows, intersection/common
+    rows, difference of rows) against several CSV files.
+
+    Example input:
+
+     # file1.csv
+     a,b,c
+     1,2,3
+     4,5,6
+     7,8,9
+ 
+     # file2.csv
+     a,b,c
+     1,2,3
+     4,5,7
+     7,8,9
+
+    Output of intersection ("--intersect file1.csv file2.csv"), which will
+    return common rows between the two files:
+
+     a,b,c
+     1,2,3
+     7,8,9
+
+    Output of union ("--union file1.csv file2.csv"), which will return all
+    rows with duplicate removed:
+
+     a,b,c
+     1,2,3
+     4,5,6
+     4,5,7
+     7,8,9
+
+    Output of difference ("--diff file1.csv file2.csv"), which will return
+    all rows in the first file but not in the second:
+
+     a,b,c
+     4,5,6
+
+    Output of symmetric difference ("--symdiff file1.csv file2.csv"), which
+    will return all rows in the first file not in the second, as well as
+    rows in the second not in the first:
+
+     a,b,c
+     4,5,6
+     4,5,7
+
+    You can specify "--compare-fields" to only consider some fields only,
+    for example "--union --compare-fields a,b file1.csv file2.csv":
+
+     a,b,c
+     1,2,3
+     4,5,6
+     7,8,9
+
+    Each field specified in "--compare-fields" can be specified using
+    "F1:OTHER1,F2:OTHER2,..." format to refer to different field names or
+    indexes in each file, for example if "file3.csv" is:
+
+     # file3.csv
+     Ei,Si,Bi
+     1,3,2
+     4,7,5
+     7,9,8
+
+    Then "--union --compare-fields a:Ei,b:Bi file1.csv file3.csv" will
+    result in:
+
+     a,b,c
+     1,2,3
+     4,5,6
+     7,8,9
+
+    Finally you can print out certain fields using "--result-fields".
+
+    *Common notes for the utilities*
+
+    Encoding: The utilities in this module/distribution accept and emit UTF8
+    text.
+
+    This function is not exported.
+
+    Arguments ('*' denotes required arguments):
+
+    *   compare_fields => *str*
+
+        (No description)
+
+    *   escape_char => *str*
+
+        Specify character to escape value in field in input CSV, will be
+        passed to Text::CSV_XS.
+
+        Defaults to "\\" (backslash). Overrides "--tsv" option.
+
+    *   filenames* => *array[filename]*
+
+        Input CSV files or URLs.
+
+        Use "-" to read from stdin, use "clipboard:" to read from clipboard.
+
+    *   header => *bool* (default: 1)
+
+        Whether input CSV has a header row.
+
+        By default ("--header"), the first row of the CSV will be assumed to
+        contain field names (and the second row contains the first data
+        row). When you declare that CSV does not have header row
+        ("--no-header"), the first row of the CSV is assumed to contain the
+        first data row. Fields will be named "field1", "field2", and so on.
+
+    *   ignore_case => *bool*
+
+        (No description)
+
+    *   op* => *str*
+
+        Set operation to perform.
+
+    *   output_escape_char => *str*
+
+        Specify character to escape value in field in output CSV, will be
+        passed to Text::CSV_XS.
+
+        This is like "--escape-char" option but for output instead of input.
+
+        Defaults to "\\" (backslash). Overrides "--output-tsv" option.
+
+    *   output_filename => *filename*
+
+        Output filename or URL.
+
+        Use "-" to output to stdout (the default if you don't specify this
+        option), use "clipboard:" to write to clipboard.
+
+    *   output_header => *bool*
+
+        Whether output CSV should have a header row.
+
+        By default, a header row will be output *if* input CSV has header
+        row. Under "--output-header", a header row will be output even if
+        input CSV does not have header row (value will be something like
+        "col0,col1,..."). Under "--no-output-header", header row will *not*
+        be printed even if input CSV has header row. So this option can be
+        used to unconditionally add or remove header row.
+
+    *   output_quote_char => *str*
+
+        Specify field quote character in output CSV, will be passed to
+        Text::CSV_XS.
+
+        This is like "--quote-char" option but for output instead of input.
+
+        Defaults to """ (double quote). Overrides "--output-tsv" option.
+
+    *   output_sep_char => *str*
+
+        Specify field separator character in output CSV, will be passed to
+        Text::CSV_XS.
+
+        This is like "--sep-char" option but for output instead of input.
+
+        Defaults to "," (comma). Overrides "--output-tsv" option.
+
+    *   output_tsv => *bool*
+
+        Inform that output file is TSV (tab-separated) format instead of
+        CSV.
+
+        This is like "--tsv" option but for output instead of input.
+
+        Overriden by "--output-sep-char", "--output-quote-char",
+        "--output-escape-char" options. If one of those options is
+        specified, then "--output-tsv" will be ignored.
+
+    *   overwrite => *bool*
+
+        Whether to override existing output file.
+
+    *   quote_char => *str*
+
+        Specify field quote character in input CSV, will be passed to
+        Text::CSV_XS.
+
+        Defaults to """ (double quote). Overrides "--tsv" option.
+
+    *   result_fields => *str*
+
+        (No description)
+
+    *   sep_char => *str*
+
+        Specify field separator character in input CSV, will be passed to
+        Text::CSV_XS.
+
+        Defaults to "," (comma). Overrides "--tsv" option.
+
+    *   tsv => *bool*
+
+        Inform that input file is in TSV (tab-separated) format instead of
+        CSV.
+
+        Overriden by "--sep-char", "--quote-char", "--escape-char" options.
+        If one of those options is specified, then "--tsv" will be ignored.
+
+    Returns an enveloped result (an array).
+
+    First element ($status_code) is an integer containing HTTP-like status
+    code (200 means OK, 4xx caller error, 5xx function error). Second
+    element ($reason) is a string containing error message, or something
+    like "OK" if status is 200. Third element ($payload) is the actual
+    result, but usually not present when enveloped result is an error
+    response ($status_code is not 2xx). Fourth element (%result_meta) is
+    called result metadata and is optional, a hash that contains extra
+    information, much like how HTTP response headers provide additional
+    metadata.
+
+    Return value: (any)
+
+  csv_shuf_fields
+    Usage:
+
+     csv_shuf_fields(%args) -> [$status_code, $reason, $payload, \%result_meta]
+
+    Shuffle CSV fields.
+
+    *Common notes for the utilities*
+
+    Encoding: The utilities in this module/distribution accept and emit UTF8
+    text.
+
+    This function is not exported.
+
+    Arguments ('*' denotes required arguments):
+
+    *   escape_char => *str*
+
+        Specify character to escape value in field in input CSV, will be
+        passed to Text::CSV_XS.
+
+        Defaults to "\\" (backslash). Overrides "--tsv" option.
+
+    *   filename* => *filename*
+
+        Input CSV file or URL.
+
+        Use "-" to read from stdin, use "clipboard:" to read from clipboard.
+
+    *   header => *bool* (default: 1)
+
+        Whether input CSV has a header row.
+
+        By default ("--header"), the first row of the CSV will be assumed to
+        contain field names (and the second row contains the first data
+        row). When you declare that CSV does not have header row
+        ("--no-header"), the first row of the CSV is assumed to contain the
+        first data row. Fields will be named "field1", "field2", and so on.
+
+    *   output_escape_char => *str*
+
+        Specify character to escape value in field in output CSV, will be
+        passed to Text::CSV_XS.
+
+        This is like "--escape-char" option but for output instead of input.
+
+        Defaults to "\\" (backslash). Overrides "--output-tsv" option.
+
+    *   output_filename => *filename*
+
+        Output filename or URL.
+
+        Use "-" to output to stdout (the default if you don't specify this
+        option), use "clipboard:" to write to clipboard.
+
+    *   output_header => *bool*
+
+        Whether output CSV should have a header row.
+
+        By default, a header row will be output *if* input CSV has header
+        row. Under "--output-header", a header row will be output even if
+        input CSV does not have header row (value will be something like
+        "col0,col1,..."). Under "--no-output-header", header row will *not*
+        be printed even if input CSV has header row. So this option can be
+        used to unconditionally add or remove header row.
+
+    *   output_quote_char => *str*
+
+        Specify field quote character in output CSV, will be passed to
+        Text::CSV_XS.
+
+        This is like "--quote-char" option but for output instead of input.
+
+        Defaults to """ (double quote). Overrides "--output-tsv" option.
+
+    *   output_sep_char => *str*
+
+        Specify field separator character in output CSV, will be passed to
+        Text::CSV_XS.
+
+        This is like "--sep-char" option but for output instead of input.
+
+        Defaults to "," (comma). Overrides "--output-tsv" option.
+
+    *   output_tsv => *bool*
+
+        Inform that output file is TSV (tab-separated) format instead of
+        CSV.
+
+        This is like "--tsv" option but for output instead of input.
+
+        Overriden by "--output-sep-char", "--output-quote-char",
+        "--output-escape-char" options. If one of those options is
+        specified, then "--output-tsv" will be ignored.
+
+    *   overwrite => *bool*
+
+        Whether to override existing output file.
+
+    *   quote_char => *str*
+
+        Specify field quote character in input CSV, will be passed to
+        Text::CSV_XS.
+
+        Defaults to """ (double quote). Overrides "--tsv" option.
+
+    *   sep_char => *str*
+
+        Specify field separator character in input CSV, will be passed to
+        Text::CSV_XS.
+
+        Defaults to "," (comma). Overrides "--tsv" option.
+
+    *   tsv => *bool*
+
+        Inform that input file is in TSV (tab-separated) format instead of
+        CSV.
+
+        Overriden by "--sep-char", "--quote-char", "--escape-char" options.
+        If one of those options is specified, then "--tsv" will be ignored.
+
+    Returns an enveloped result (an array).
+
+    First element ($status_code) is an integer containing HTTP-like status
+    code (200 means OK, 4xx caller error, 5xx function error). Second
+    element ($reason) is a string containing error message, or something
+    like "OK" if status is 200. Third element ($payload) is the actual
+    result, but usually not present when enveloped result is an error
+    response ($status_code is not 2xx). Fourth element (%result_meta) is
+    called result metadata and is optional, a hash that contains extra
+    information, much like how HTTP response headers provide additional
+    metadata.
+
+    Return value: (any)
+
+  csv_shuf_rows
+    Usage:
+
+     csv_shuf_rows(%args) -> [$status_code, $reason, $payload, \%result_meta]
+
+    Shuffle CSV rows.
+
+    This is basically like Unix command "shuf" except it does not shuffle
+    the header row.
+
+    *Common notes for the utilities*
+
+    Encoding: The utilities in this module/distribution accept and emit UTF8
+    text.
+
+    This function is not exported.
+
+    Arguments ('*' denotes required arguments):
+
+    *   escape_char => *str*
+
+        Specify character to escape value in field in input CSV, will be
+        passed to Text::CSV_XS.
+
+        Defaults to "\\" (backslash). Overrides "--tsv" option.
+
+    *   filename* => *filename*
+
+        Input CSV file or URL.
+
+        Use "-" to read from stdin, use "clipboard:" to read from clipboard.
+
+    *   header => *bool* (default: 1)
+
+        Whether input CSV has a header row.
+
+        By default ("--header"), the first row of the CSV will be assumed to
+        contain field names (and the second row contains the first data
+        row). When you declare that CSV does not have header row
+        ("--no-header"), the first row of the CSV is assumed to contain the
+        first data row. Fields will be named "field1", "field2", and so on.
+
+    *   output_escape_char => *str*
+
+        Specify character to escape value in field in output CSV, will be
+        passed to Text::CSV_XS.
+
+        This is like "--escape-char" option but for output instead of input.
+
+        Defaults to "\\" (backslash). Overrides "--output-tsv" option.
+
+    *   output_filename => *filename*
+
+        Output filename or URL.
+
+        Use "-" to output to stdout (the default if you don't specify this
+        option), use "clipboard:" to write to clipboard.
+
+    *   output_header => *bool*
+
+        Whether output CSV should have a header row.
+
+        By default, a header row will be output *if* input CSV has header
+        row. Under "--output-header", a header row will be output even if
+        input CSV does not have header row (value will be something like
+        "col0,col1,..."). Under "--no-output-header", header row will *not*
+        be printed even if input CSV has header row. So this option can be
+        used to unconditionally add or remove header row.
+
+    *   output_quote_char => *str*
+
+        Specify field quote character in output CSV, will be passed to
+        Text::CSV_XS.
+
+        This is like "--quote-char" option but for output instead of input.
+
+        Defaults to """ (double quote). Overrides "--output-tsv" option.
+
+    *   output_sep_char => *str*
+
+        Specify field separator character in output CSV, will be passed to
+        Text::CSV_XS.
+
+        This is like "--sep-char" option but for output instead of input.
+
+        Defaults to "," (comma). Overrides "--output-tsv" option.
+
+    *   output_tsv => *bool*
+
+        Inform that output file is TSV (tab-separated) format instead of
+        CSV.
+
+        This is like "--tsv" option but for output instead of input.
+
+        Overriden by "--output-sep-char", "--output-quote-char",
+        "--output-escape-char" options. If one of those options is
+        specified, then "--output-tsv" will be ignored.
+
+    *   overwrite => *bool*
+
+        Whether to override existing output file.
+
+    *   quote_char => *str*
+
+        Specify field quote character in input CSV, will be passed to
+        Text::CSV_XS.
+
+        Defaults to """ (double quote). Overrides "--tsv" option.
+
+    *   sep_char => *str*
+
+        Specify field separator character in input CSV, will be passed to
+        Text::CSV_XS.
+
+        Defaults to "," (comma). Overrides "--tsv" option.
+
+    *   tsv => *bool*
+
+        Inform that input file is in TSV (tab-separated) format instead of
+        CSV.
+
+        Overriden by "--sep-char", "--quote-char", "--escape-char" options.
+        If one of those options is specified, then "--tsv" will be ignored.
+
+    Returns an enveloped result (an array).
+
+    First element ($status_code) is an integer containing HTTP-like status
+    code (200 means OK, 4xx caller error, 5xx function error). Second
+    element ($reason) is a string containing error message, or something
+    like "OK" if status is 200. Third element ($payload) is the actual
+    result, but usually not present when enveloped result is an error
+    response ($status_code is not 2xx). Fourth element (%result_meta) is
+    called result metadata and is optional, a hash that contains extra
+    information, much like how HTTP response headers provide additional
+    metadata.
+
+    Return value: (any)
+
+  csv_sort_fields
+    Usage:
+
+     csv_sort_fields(%args) -> [$status_code, $reason, $payload, \%result_meta]
+
+    Sort CSV fields.
+
+    This utility sorts the order of fields in the CSV. Example input CSV:
+
+     b,c,a
+     1,2,3
+     4,5,6
+
+    Example output CSV:
+
+     a,b,c
+     3,1,2
+     6,4,5
+
+    You can also reverse the sort order ("-r"), sort case-insensitively
+    ("-i"), or provides the ordering example, e.g. "--by-examples-json
+    '["a","c","b"]'", or use "--by-code" or "--by-sortsub".
+
+    *Common notes for the utilities*
+
+    Encoding: The utilities in this module/distribution accept and emit UTF8
+    text.
+
+    This function is not exported.
+
+    Arguments ('*' denotes required arguments):
+
+    *   by_code => *str|code*
+
+        Sort using Perl code.
+
+        $a and $b (or the first and second argument) will contain the two
+        rows to be compared. Which are arrayrefs; or if "--hash" ("-H") is
+        specified, hashrefs; or if "--key" is specified, whatever the code
+        in "--key" returns.
+
+    *   by_examples => *array[str]*
+
+        A list of field names to sort by example.
+
+    *   by_sortsub => *str*
+
+        Sort using a Sort::Sub routine.
+
+        When sorting rows, usually combined with "--key" because most
+        Sort::Sub routine expects a string to be compared against.
+
+        When sorting fields, the Sort::Sub routine will get the field name
+        as argument.
+
+    *   ci => *bool*
+
+        (No description)
+
+    *   escape_char => *str*
+
+        Specify character to escape value in field in input CSV, will be
+        passed to Text::CSV_XS.
+
+        Defaults to "\\" (backslash). Overrides "--tsv" option.
+
+    *   filename* => *filename*
+
+        Input CSV file or URL.
+
+        Use "-" to read from stdin, use "clipboard:" to read from clipboard.
+
+    *   header => *bool* (default: 1)
+
+        Whether input CSV has a header row.
+
+        By default ("--header"), the first row of the CSV will be assumed to
+        contain field names (and the second row contains the first data
+        row). When you declare that CSV does not have header row
+        ("--no-header"), the first row of the CSV is assumed to contain the
+        first data row. Fields will be named "field1", "field2", and so on.
+
+    *   output_escape_char => *str*
+
+        Specify character to escape value in field in output CSV, will be
+        passed to Text::CSV_XS.
+
+        This is like "--escape-char" option but for output instead of input.
+
+        Defaults to "\\" (backslash). Overrides "--output-tsv" option.
+
+    *   output_filename => *filename*
+
+        Output filename or URL.
+
+        Use "-" to output to stdout (the default if you don't specify this
+        option), use "clipboard:" to write to clipboard.
+
+    *   output_header => *bool*
+
+        Whether output CSV should have a header row.
+
+        By default, a header row will be output *if* input CSV has header
+        row. Under "--output-header", a header row will be output even if
+        input CSV does not have header row (value will be something like
+        "col0,col1,..."). Under "--no-output-header", header row will *not*
+        be printed even if input CSV has header row. So this option can be
+        used to unconditionally add or remove header row.
+
+    *   output_quote_char => *str*
+
+        Specify field quote character in output CSV, will be passed to
+        Text::CSV_XS.
+
+        This is like "--quote-char" option but for output instead of input.
+
+        Defaults to """ (double quote). Overrides "--output-tsv" option.
+
+    *   output_sep_char => *str*
+
+        Specify field separator character in output CSV, will be passed to
+        Text::CSV_XS.
+
+        This is like "--sep-char" option but for output instead of input.
+
+        Defaults to "," (comma). Overrides "--output-tsv" option.
+
+    *   output_tsv => *bool*
+
+        Inform that output file is TSV (tab-separated) format instead of
+        CSV.
+
+        This is like "--tsv" option but for output instead of input.
+
+        Overriden by "--output-sep-char", "--output-quote-char",
+        "--output-escape-char" options. If one of those options is
+        specified, then "--output-tsv" will be ignored.
+
+    *   overwrite => *bool*
+
+        Whether to override existing output file.
+
+    *   quote_char => *str*
+
+        Specify field quote character in input CSV, will be passed to
+        Text::CSV_XS.
+
+        Defaults to """ (double quote). Overrides "--tsv" option.
+
+    *   reverse => *bool*
+
+        (No description)
+
+    *   sep_char => *str*
+
+        Specify field separator character in input CSV, will be passed to
+        Text::CSV_XS.
+
+        Defaults to "," (comma). Overrides "--tsv" option.
+
+    *   sortsub_args => *hash*
+
+        Arguments to pass to Sort::Sub routine.
+
+    *   tsv => *bool*
+
+        Inform that input file is in TSV (tab-separated) format instead of
+        CSV.
+
+        Overriden by "--sep-char", "--quote-char", "--escape-char" options.
+        If one of those options is specified, then "--tsv" will be ignored.
+
+    Returns an enveloped result (an array).
+
+    First element ($status_code) is an integer containing HTTP-like status
+    code (200 means OK, 4xx caller error, 5xx function error). Second
+    element ($reason) is a string containing error message, or something
+    like "OK" if status is 200. Third element ($payload) is the actual
+    result, but usually not present when enveloped result is an error
+    response ($status_code is not 2xx). Fourth element (%result_meta) is
+    called result metadata and is optional, a hash that contains extra
+    information, much like how HTTP response headers provide additional
+    metadata.
+
+    Return value: (any)
+
+  csv_sort_rows
+    Usage:
+
+     csv_sort_rows(%args) -> [$status_code, $reason, $payload, \%result_meta]
+
+    Sort CSV rows.
+
+    This utility sorts the rows in the CSV. Example input CSV:
+
+     name,age
+     Andy,20
+     Dennis,15
+     Ben,30
+     Jerry,30
+
+    Example output CSV (using "--by-field +age" which means by age
+    numerically and ascending):
+
+     name,age
+     Dennis,15
+     Andy,20
+     Ben,30
+     Jerry,30
+
+    Example output CSV (using "--by-field -age", which means by age
+    numerically and descending):
+
+     name,age
+     Ben,30
+     Jerry,30
+     Andy,20
+     Dennis,15
+
+    Example output CSV (using "--by-field name", which means by name
+    ascibetically and ascending):
+
+     name,age
+     Andy,20
+     Ben,30
+     Dennis,15
+     Jerry,30
+
+    Example output CSV (using "--by-field ~name", which means by name
+    ascibetically and descending):
+
+     name,age
+     Jerry,30
+     Dennis,15
+     Ben,30
+     Andy,20
+
+    Example output CSV (using "--by-field +age --by-field ~name"):
+
+     name,age
+     Dennis,15
+     Andy,20
+     Jerry,30
+     Ben,30
+
+    You can also reverse the sort order ("-r") or sort case-insensitively
+    ("-i").
+
+    For more flexibility, instead of "--by-field" you can use "--by-code":
+
+    Example output "--by-code '$a->[1] <=> $b->[1] || $b->[0] cmp $a->[0]'"
+    (which is equivalent to "--by-field +age --by-field ~name"):
+
+     name,age
+     Dennis,15
+     Andy,20
+     Jerry,30
+     Ben,30
+
+    If you use "--hash", your code will receive the rows to be compared as
+    hashref, e.g. `--hash --by-code '$a->{age} <=> $b->{age} || $b->{name}
+    cmp $a->{name}'.
+
+    A third alternative is to sort using Sort::Sub routines. Example output
+    (using "--by-sortsub 'by_length<r>' --key '$_->[0]'", which is to say to
+    sort by descending length of name):
+
+     name,age
+     Dennis,15
+     Jerry,30
+     Andy,20
+     Ben,30
+
+    *Common notes for the utilities*
+
+    Encoding: The utilities in this module/distribution accept and emit UTF8
+    text.
+
+    This function is not exported.
+
+    Arguments ('*' denotes required arguments):
+
+    *   by_code => *str|code*
+
+        Sort using Perl code.
+
+        $a and $b (or the first and second argument) will contain the two
+        rows to be compared. Which are arrayrefs; or if "--hash" ("-H") is
+        specified, hashrefs; or if "--key" is specified, whatever the code
+        in "--key" returns.
+
+    *   by_fields => *array[str]*
+
+        Sort by a list of field specifications.
+
+        Each field specification is a field name with an optional prefix.
+        "FIELD" (without prefix) means sort asciibetically ascending
+        (smallest to largest), "~FIELD" means sort asciibetically descending
+        (largest to smallest), "+FIELD" means sort numerically ascending,
+        "-FIELD" means sort numerically descending.
+
+    *   by_sortsub => *str*
+
+        Sort using a Sort::Sub routine.
+
+        When sorting rows, usually combined with "--key" because most
+        Sort::Sub routine expects a string to be compared against.
+
+        When sorting fields, the Sort::Sub routine will get the field name
+        as argument.
+
+    *   ci => *bool*
+
+        (No description)
+
+    *   escape_char => *str*
+
+        Specify character to escape value in field in input CSV, will be
+        passed to Text::CSV_XS.
+
+        Defaults to "\\" (backslash). Overrides "--tsv" option.
+
+    *   filename* => *filename*
+
+        Input CSV file or URL.
+
+        Use "-" to read from stdin, use "clipboard:" to read from clipboard.
+
+    *   hash => *bool*
+
+        Provide row in $_ as hashref instead of arrayref.
+
+    *   header => *bool* (default: 1)
+
+        Whether input CSV has a header row.
+
+        By default ("--header"), the first row of the CSV will be assumed to
+        contain field names (and the second row contains the first data
+        row). When you declare that CSV does not have header row
+        ("--no-header"), the first row of the CSV is assumed to contain the
+        first data row. Fields will be named "field1", "field2", and so on.
+
+    *   key => *str|code*
+
+        Generate sort keys with this Perl code.
+
+        If specified, then will compute sort keys using Perl code and sort
+        using the keys. Relevant when sorting using "--by-code" or
+        "--by-sortsub". If specified, then instead of row when sorting rows,
+        the code (or Sort::Sub routine) will receive these sort keys to sort
+        against.
+
+        Tthe code will receive the row (arrayref) as the argument.
+
+    *   output_escape_char => *str*
+
+        Specify character to escape value in field in output CSV, will be
+        passed to Text::CSV_XS.
+
+        This is like "--escape-char" option but for output instead of input.
+
+        Defaults to "\\" (backslash). Overrides "--output-tsv" option.
+
+    *   output_filename => *filename*
+
+        Output filename or URL.
+
+        Use "-" to output to stdout (the default if you don't specify this
+        option), use "clipboard:" to write to clipboard.
+
+    *   output_header => *bool*
+
+        Whether output CSV should have a header row.
+
+        By default, a header row will be output *if* input CSV has header
+        row. Under "--output-header", a header row will be output even if
+        input CSV does not have header row (value will be something like
+        "col0,col1,..."). Under "--no-output-header", header row will *not*
+        be printed even if input CSV has header row. So this option can be
+        used to unconditionally add or remove header row.
+
+    *   output_quote_char => *str*
+
+        Specify field quote character in output CSV, will be passed to
+        Text::CSV_XS.
+
+        This is like "--quote-char" option but for output instead of input.
+
+        Defaults to """ (double quote). Overrides "--output-tsv" option.
+
+    *   output_sep_char => *str*
+
+        Specify field separator character in output CSV, will be passed to
+        Text::CSV_XS.
+
+        This is like "--sep-char" option but for output instead of input.
+
+        Defaults to "," (comma). Overrides "--output-tsv" option.
+
+    *   output_tsv => *bool*
+
+        Inform that output file is TSV (tab-separated) format instead of
+        CSV.
+
+        This is like "--tsv" option but for output instead of input.
+
+        Overriden by "--output-sep-char", "--output-quote-char",
+        "--output-escape-char" options. If one of those options is
+        specified, then "--output-tsv" will be ignored.
+
+    *   overwrite => *bool*
+
+        Whether to override existing output file.
+
+    *   quote_char => *str*
+
+        Specify field quote character in input CSV, will be passed to
+        Text::CSV_XS.
+
+        Defaults to """ (double quote). Overrides "--tsv" option.
+
+    *   reverse => *bool*
+
+        (No description)
+
+    *   sep_char => *str*
+
+        Specify field separator character in input CSV, will be passed to
+        Text::CSV_XS.
+
+        Defaults to "," (comma). Overrides "--tsv" option.
+
+    *   sortsub_args => *hash*
+
+        Arguments to pass to Sort::Sub routine.
+
+    *   tsv => *bool*
+
+        Inform that input file is in TSV (tab-separated) format instead of
+        CSV.
+
+        Overriden by "--sep-char", "--quote-char", "--escape-char" options.
+        If one of those options is specified, then "--tsv" will be ignored.
+
+    Returns an enveloped result (an array).
+
+    First element ($status_code) is an integer containing HTTP-like status
+    code (200 means OK, 4xx caller error, 5xx function error). Second
+    element ($reason) is a string containing error message, or something
+    like "OK" if status is 200. Third element ($payload) is the actual
+    result, but usually not present when enveloped result is an error
+    response ($status_code is not 2xx). Fourth element (%result_meta) is
+    called result metadata and is optional, a hash that contains extra
+    information, much like how HTTP response headers provide additional
+    metadata.
+
+    Return value: (any)
+
+  csv_split
+    Usage:
+
+     csv_split(%args) -> [$status_code, $reason, $payload, \%result_meta]
+
+    Split CSV file into several files.
+
+    Will output split files xaa, xab, and so on. Each split file will
+    contain a maximum of "lines" rows (options to limit split files' size
+    based on number of characters and bytes will be added). Each split file
+    will also contain CSV header.
+
+    Warning: by default, existing split files xaa, xab, and so on will be
+    overwritten.
+
+    Interface is loosely based on the "split" Unix utility.
+
+    *Common notes for the utilities*
+
+    Encoding: The utilities in this module/distribution accept and emit UTF8
+    text.
+
+    This function is not exported.
+
+    Arguments ('*' denotes required arguments):
+
+    *   escape_char => *str*
+
+        Specify character to escape value in field in input CSV, will be
+        passed to Text::CSV_XS.
+
+        Defaults to "\\" (backslash). Overrides "--tsv" option.
+
+    *   filename* => *filename*
+
+        Input CSV file or URL.
+
+        Use "-" to read from stdin, use "clipboard:" to read from clipboard.
+
+    *   header => *bool* (default: 1)
+
+        Whether input CSV has a header row.
+
+        By default ("--header"), the first row of the CSV will be assumed to
+        contain field names (and the second row contains the first data
+        row). When you declare that CSV does not have header row
+        ("--no-header"), the first row of the CSV is assumed to contain the
+        first data row. Fields will be named "field1", "field2", and so on.
+
+    *   lines => *uint* (default: 1000)
+
+        (No description)
+
+    *   output_escape_char => *str*
+
+        Specify character to escape value in field in output CSV, will be
+        passed to Text::CSV_XS.
+
+        This is like "--escape-char" option but for output instead of input.
+
+        Defaults to "\\" (backslash). Overrides "--output-tsv" option.
+
+    *   output_header => *bool*
+
+        Whether output CSV should have a header row.
+
+        By default, a header row will be output *if* input CSV has header
+        row. Under "--output-header", a header row will be output even if
+        input CSV does not have header row (value will be something like
+        "col0,col1,..."). Under "--no-output-header", header row will *not*
+        be printed even if input CSV has header row. So this option can be
+        used to unconditionally add or remove header row.
+
+    *   output_quote_char => *str*
+
+        Specify field quote character in output CSV, will be passed to
+        Text::CSV_XS.
+
+        This is like "--quote-char" option but for output instead of input.
+
+        Defaults to """ (double quote). Overrides "--output-tsv" option.
+
+    *   output_sep_char => *str*
+
+        Specify field separator character in output CSV, will be passed to
+        Text::CSV_XS.
+
+        This is like "--sep-char" option but for output instead of input.
+
+        Defaults to "," (comma). Overrides "--output-tsv" option.
+
+    *   output_tsv => *bool*
+
+        Inform that output file is TSV (tab-separated) format instead of
+        CSV.
+
+        This is like "--tsv" option but for output instead of input.
+
+        Overriden by "--output-sep-char", "--output-quote-char",
+        "--output-escape-char" options. If one of those options is
+        specified, then "--output-tsv" will be ignored.
+
+    *   quote_char => *str*
+
+        Specify field quote character in input CSV, will be passed to
+        Text::CSV_XS.
+
+        Defaults to """ (double quote). Overrides "--tsv" option.
+
+    *   sep_char => *str*
+
+        Specify field separator character in input CSV, will be passed to
+        Text::CSV_XS.
+
+        Defaults to "," (comma). Overrides "--tsv" option.
+
+    *   tsv => *bool*
+
+        Inform that input file is in TSV (tab-separated) format instead of
+        CSV.
+
+        Overriden by "--sep-char", "--quote-char", "--escape-char" options.
+        If one of those options is specified, then "--tsv" will be ignored.
+
+    Returns an enveloped result (an array).
+
+    First element ($status_code) is an integer containing HTTP-like status
+    code (200 means OK, 4xx caller error, 5xx function error). Second
+    element ($reason) is a string containing error message, or something
+    like "OK" if status is 200. Third element ($payload) is the actual
+    result, but usually not present when enveloped result is an error
+    response ($status_code is not 2xx). Fourth element (%result_meta) is
+    called result metadata and is optional, a hash that contains extra
+    information, much like how HTTP response headers provide additional
+    metadata.
+
+    Return value: (any)
+
+  csv_sum
+    Usage:
+
+     csv_sum(%args) -> [$status_code, $reason, $payload, \%result_meta]
+
+    Output a summary row which are arithmetic sums of data rows.
+
+    *Common notes for the utilities*
+
+    Encoding: The utilities in this module/distribution accept and emit UTF8
+    text.
+
+    This function is not exported.
+
+    Arguments ('*' denotes required arguments):
+
+    *   escape_char => *str*
+
+        Specify character to escape value in field in input CSV, will be
+        passed to Text::CSV_XS.
+
+        Defaults to "\\" (backslash). Overrides "--tsv" option.
+
+    *   filename* => *filename*
+
+        Input CSV file or URL.
+
+        Use "-" to read from stdin, use "clipboard:" to read from clipboard.
+
+    *   header => *bool* (default: 1)
+
+        Whether input CSV has a header row.
+
+        By default ("--header"), the first row of the CSV will be assumed to
+        contain field names (and the second row contains the first data
+        row). When you declare that CSV does not have header row
+        ("--no-header"), the first row of the CSV is assumed to contain the
+        first data row. Fields will be named "field1", "field2", and so on.
+
+    *   output_escape_char => *str*
+
+        Specify character to escape value in field in output CSV, will be
+        passed to Text::CSV_XS.
+
+        This is like "--escape-char" option but for output instead of input.
+
+        Defaults to "\\" (backslash). Overrides "--output-tsv" option.
+
+    *   output_filename => *filename*
+
+        Output filename or URL.
+
+        Use "-" to output to stdout (the default if you don't specify this
+        option), use "clipboard:" to write to clipboard.
+
+    *   output_header => *bool*
+
+        Whether output CSV should have a header row.
+
+        By default, a header row will be output *if* input CSV has header
+        row. Under "--output-header", a header row will be output even if
+        input CSV does not have header row (value will be something like
+        "col0,col1,..."). Under "--no-output-header", header row will *not*
+        be printed even if input CSV has header row. So this option can be
+        used to unconditionally add or remove header row.
+
+    *   output_quote_char => *str*
+
+        Specify field quote character in output CSV, will be passed to
+        Text::CSV_XS.
+
+        This is like "--quote-char" option but for output instead of input.
+
+        Defaults to """ (double quote). Overrides "--output-tsv" option.
+
+    *   output_sep_char => *str*
+
+        Specify field separator character in output CSV, will be passed to
+        Text::CSV_XS.
+
+        This is like "--sep-char" option but for output instead of input.
+
+        Defaults to "," (comma). Overrides "--output-tsv" option.
+
+    *   output_tsv => *bool*
+
+        Inform that output file is TSV (tab-separated) format instead of
+        CSV.
+
+        This is like "--tsv" option but for output instead of input.
+
+        Overriden by "--output-sep-char", "--output-quote-char",
+        "--output-escape-char" options. If one of those options is
+        specified, then "--output-tsv" will be ignored.
+
+    *   overwrite => *bool*
+
+        Whether to override existing output file.
+
+    *   quote_char => *str*
+
+        Specify field quote character in input CSV, will be passed to
+        Text::CSV_XS.
+
+        Defaults to """ (double quote). Overrides "--tsv" option.
+
+    *   sep_char => *str*
+
+        Specify field separator character in input CSV, will be passed to
+        Text::CSV_XS.
+
+        Defaults to "," (comma). Overrides "--tsv" option.
+
+    *   tsv => *bool*
+
+        Inform that input file is in TSV (tab-separated) format instead of
+        CSV.
+
+        Overriden by "--sep-char", "--quote-char", "--escape-char" options.
+        If one of those options is specified, then "--tsv" will be ignored.
+
+    *   with_data_rows => *bool*
+
+        Whether to also output data rows.
+
+    Returns an enveloped result (an array).
+
+    First element ($status_code) is an integer containing HTTP-like status
+    code (200 means OK, 4xx caller error, 5xx function error). Second
+    element ($reason) is a string containing error message, or something
+    like "OK" if status is 200. Third element ($payload) is the actual
+    result, but usually not present when enveloped result is an error
+    response ($status_code is not 2xx). Fourth element (%result_meta) is
+    called result metadata and is optional, a hash that contains extra
+    information, much like how HTTP response headers provide additional
+    metadata.
+
+    Return value: (any)
+
+  csv_transpose
+    Usage:
+
+     csv_transpose(%args) -> [$status_code, $reason, $payload, \%result_meta]
+
+    Transpose a CSV.
+
+    *Common notes for the utilities*
+
+    Encoding: The utilities in this module/distribution accept and emit UTF8
+    text.
+
+    This function is not exported.
+
+    Arguments ('*' denotes required arguments):
+
+    *   escape_char => *str*
+
+        Specify character to escape value in field in input CSV, will be
+        passed to Text::CSV_XS.
+
+        Defaults to "\\" (backslash). Overrides "--tsv" option.
+
+    *   filename* => *filename*
+
+        Input CSV file or URL.
+
+        Use "-" to read from stdin, use "clipboard:" to read from clipboard.
+
+    *   header => *bool* (default: 1)
+
+        Whether input CSV has a header row.
+
+        By default ("--header"), the first row of the CSV will be assumed to
+        contain field names (and the second row contains the first data
+        row). When you declare that CSV does not have header row
+        ("--no-header"), the first row of the CSV is assumed to contain the
+        first data row. Fields will be named "field1", "field2", and so on.
+
+    *   output_escape_char => *str*
+
+        Specify character to escape value in field in output CSV, will be
+        passed to Text::CSV_XS.
+
+        This is like "--escape-char" option but for output instead of input.
+
+        Defaults to "\\" (backslash). Overrides "--output-tsv" option.
+
+    *   output_filename => *filename*
+
+        Output filename or URL.
+
+        Use "-" to output to stdout (the default if you don't specify this
+        option), use "clipboard:" to write to clipboard.
+
+    *   output_header => *bool*
+
+        Whether output CSV should have a header row.
+
+        By default, a header row will be output *if* input CSV has header
+        row. Under "--output-header", a header row will be output even if
+        input CSV does not have header row (value will be something like
+        "col0,col1,..."). Under "--no-output-header", header row will *not*
+        be printed even if input CSV has header row. So this option can be
+        used to unconditionally add or remove header row.
+
+    *   output_quote_char => *str*
+
+        Specify field quote character in output CSV, will be passed to
+        Text::CSV_XS.
+
+        This is like "--quote-char" option but for output instead of input.
+
+        Defaults to """ (double quote). Overrides "--output-tsv" option.
+
+    *   output_sep_char => *str*
+
+        Specify field separator character in output CSV, will be passed to
+        Text::CSV_XS.
+
+        This is like "--sep-char" option but for output instead of input.
+
+        Defaults to "," (comma). Overrides "--output-tsv" option.
+
+    *   output_tsv => *bool*
+
+        Inform that output file is TSV (tab-separated) format instead of
+        CSV.
+
+        This is like "--tsv" option but for output instead of input.
+
+        Overriden by "--output-sep-char", "--output-quote-char",
+        "--output-escape-char" options. If one of those options is
+        specified, then "--output-tsv" will be ignored.
+
+    *   overwrite => *bool*
+
+        Whether to override existing output file.
+
+    *   quote_char => *str*
+
+        Specify field quote character in input CSV, will be passed to
+        Text::CSV_XS.
+
+        Defaults to """ (double quote). Overrides "--tsv" option.
+
+    *   sep_char => *str*
+
+        Specify field separator character in input CSV, will be passed to
+        Text::CSV_XS.
+
+        Defaults to "," (comma). Overrides "--tsv" option.
+
+    *   tsv => *bool*
+
+        Inform that input file is in TSV (tab-separated) format instead of
+        CSV.
+
+        Overriden by "--sep-char", "--quote-char", "--escape-char" options.
+        If one of those options is specified, then "--tsv" will be ignored.
+
+    Returns an enveloped result (an array).
+
+    First element ($status_code) is an integer containing HTTP-like status
+    code (200 means OK, 4xx caller error, 5xx function error). Second
+    element ($reason) is a string containing error message, or something
+    like "OK" if status is 200. Third element ($payload) is the actual
+    result, but usually not present when enveloped result is an error
+    response ($status_code is not 2xx). Fourth element (%result_meta) is
+    called result metadata and is optional, a hash that contains extra
+    information, much like how HTTP response headers provide additional
+    metadata.
+
+    Return value: (any)
+
+FAQ
+  My CSV does not have a header?
+    Use the "--no-header" option. Fields will be named "field1", "field2",
+    and so on.
+
+  My data is TSV, not CSV?
+    Use the "--tsv" option.
+
+  I have a big CSV and the utilities are too slow or eat too much RAM!
+    These utilities are not (yet) optimized, patches welcome. If your CSV is
+    very big, perhaps a C-based solution is what you need.
+
+HOMEPAGE
+    Please visit the project's homepage at
+    <https://metacpan.org/release/App-CSVUtils>.
+
+SOURCE
+    Source repository is at
+    <https://github.com/perlancar/perl-App-CSVUtils>.
+
+SEE ALSO
+  Similar CLI bundles for other format
+    App::TSVUtils, App::LTSVUtils, App::SerializeUtils.
+
+  Other CSV-related utilities
+    xls2csv and xlsx2csv from Spreadsheet::Read
+
+    import-csv-to-sqlite from App::SQLiteUtils
+
+    Query CSV with SQL using fsql from App::fsql
+
+    csvgrep from csvgrep
+
+  Other non-Perl-based CSV utilities
+   Python
+    csvkit, <https://csvkit.readthedocs.io/en/latest/>
+
+AUTHOR
+    perlancar <perlancar@cpan.org>
+
+CONTRIBUTOR
+    Adam Hopkins <violapiratejunky@gmail.com>
+
+CONTRIBUTING
+    To contribute, you can send patches by email/via RT, or send pull
+    requests on GitHub.
+
+    Most of the time, you don't need to build the distribution yourself. You
+    can simply modify the code, then test via:
+
+     % prove -l
+
+    If you want to build the distribution (e.g. to try to install it locally
+    on your system), you can install Dist::Zilla,
+    Dist::Zilla::PluginBundle::Author::PERLANCAR,
+    Pod::Weaver::PluginBundle::Author::PERLANCAR, and sometimes one or two
+    other Dist::Zilla- and/or Pod::Weaver plugins. Any additional steps
+    required beyond that are considered a bug and can be reported to me.
+
+COPYRIGHT AND LICENSE
+    This software is copyright (c) 2022, 2021, 2020, 2019, 2018, 2017, 2016
+    by perlancar <perlancar@cpan.org>.
+
+    This is free software; you can redistribute it and/or modify it under
+    the same terms as the Perl 5 programming language system itself.
+
+BUGS
+    Please report any bugs or feature requests on the bugtracker website
+    <https://rt.cpan.org/Public/Dist/Display.html?Name=App-CSVUtils>
+
+    When submitting a bug or request, please include a test-file or a patch
+    to an existing test-file that illustrates the bug or desired feature.
+

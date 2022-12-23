@@ -1,0 +1,797 @@
+---
+abstract: 'CLI utilities related to CSV'
+author:
+  - 'perlancar <perlancar@cpan.org>'
+build_requires:
+  Capture::Tiny: '0'
+  File::Slurper: '0'
+  File::Spec: '0'
+  File::Temp: '0.2307'
+  IO::Handle: '0'
+  IPC::Open3: '0'
+  Test::Exception: '0'
+  Test::More: '0.98'
+  Test::Needs: '0'
+configure_requires:
+  ExtUtils::MakeMaker: '0'
+dynamic_config: 0
+generated_by: 'Dist::Zilla version 6.028, CPAN::Meta::Converter version 2.150010'
+license: perl
+meta-spec:
+  url: http://module-build.sourceforge.net/META-spec-v1.4.html
+  version: '1.4'
+name: App-CSVUtils
+provides:
+  App::CSVUtils:
+    file: lib/App/CSVUtils.pm
+    version: 0.999_1
+  App::CSVUtils::csv2td:
+    file: lib/App/CSVUtils/csv2td.pm
+    version: 0.999_1
+  App::CSVUtils::csv2vcf:
+    file: lib/App/CSVUtils/csv2vcf.pm
+    version: 0.999_1
+  App::CSVUtils::csv_add_fields:
+    file: lib/App/CSVUtils/csv_add_fields.pm
+    version: 0.999_1
+  App::CSVUtils::csv_avg:
+    file: lib/App/CSVUtils/csv_avg.pm
+    version: 0.999_1
+  App::CSVUtils::csv_concat:
+    file: lib/App/CSVUtils/csv_concat.pm
+    version: 0.999_1
+  App::CSVUtils::csv_convert_to_hash:
+    file: lib/App/CSVUtils/csv_convert_to_hash.pm
+    version: 0.999_1
+  App::CSVUtils::csv_csv:
+    file: lib/App/CSVUtils/csv_csv.pm
+    version: 0.999_1
+  App::CSVUtils::csv_delete_fields:
+    file: lib/App/CSVUtils/csv_delete_fields.pm
+    version: 0.999_1
+  App::CSVUtils::csv_dump:
+    file: lib/App/CSVUtils/csv_dump.pm
+    version: 0.999_1
+  App::CSVUtils::csv_each_row:
+    file: lib/App/CSVUtils/csv_each_row.pm
+    version: 0.999_1
+  App::CSVUtils::csv_fill_template:
+    file: lib/App/CSVUtils/csv_fill_template.pm
+    version: 0.999_1
+  App::CSVUtils::csv_freqtable:
+    file: lib/App/CSVUtils/csv_freqtable.pm
+    version: 0.999_1
+  App::CSVUtils::csv_gen:
+    file: lib/App/CSVUtils/csv_gen.pm
+    version: 0.999_1
+  App::CSVUtils::csv_get_cells:
+    file: lib/App/CSVUtils/csv_get_cells.pm
+    version: 0.999_1
+  App::CSVUtils::csv_grep:
+    file: lib/App/CSVUtils/csv_grep.pm
+    version: 0.999_1
+  App::CSVUtils::csv_info:
+    file: lib/App/CSVUtils/csv_info.pm
+    version: 0.999_1
+  App::CSVUtils::csv_list_field_names:
+    file: lib/App/CSVUtils/csv_list_field_names.pm
+    version: 0.999_1
+  App::CSVUtils::csv_lookup_fields:
+    file: lib/App/CSVUtils/csv_lookup_fields.pm
+    version: 0.999_1
+  App::CSVUtils::csv_map:
+    file: lib/App/CSVUtils/csv_map.pm
+    version: 0.999_1
+  App::CSVUtils::csv_munge_field:
+    file: lib/App/CSVUtils/csv_munge_field.pm
+    version: 0.999_1
+  App::CSVUtils::csv_munge_row:
+    file: lib/App/CSVUtils/csv_munge_row.pm
+    version: 0.999_1
+  App::CSVUtils::csv_pick_fields:
+    file: lib/App/CSVUtils/csv_pick_fields.pm
+    version: 0.999_1
+  App::CSVUtils::csv_pick_rows:
+    file: lib/App/CSVUtils/csv_pick_rows.pm
+    version: 0.999_1
+  App::CSVUtils::csv_replace_newline:
+    file: lib/App/CSVUtils/csv_replace_newline.pm
+    version: 0.999_1
+  App::CSVUtils::csv_select_fields:
+    file: lib/App/CSVUtils/csv_select_fields.pm
+    version: 0.999_1
+  App::CSVUtils::csv_select_rows:
+    file: lib/App/CSVUtils/csv_select_rows.pm
+    version: 0.999_1
+  App::CSVUtils::csv_setop:
+    file: lib/App/CSVUtils/csv_setop.pm
+    version: 0.999_1
+  App::CSVUtils::csv_shuf_fields:
+    file: lib/App/CSVUtils/csv_shuf_fields.pm
+    version: 0.999_1
+  App::CSVUtils::csv_shuf_rows:
+    file: lib/App/CSVUtils/csv_shuf_rows.pm
+    version: 0.999_1
+  App::CSVUtils::csv_sort_fields:
+    file: lib/App/CSVUtils/csv_sort_fields.pm
+    version: 0.999_1
+  App::CSVUtils::csv_sort_rows:
+    file: lib/App/CSVUtils/csv_sort_rows.pm
+    version: 0.999_1
+  App::CSVUtils::csv_split:
+    file: lib/App/CSVUtils/csv_split.pm
+    version: 0.999_1
+  App::CSVUtils::csv_sum:
+    file: lib/App/CSVUtils/csv_sum.pm
+    version: 0.999_1
+  App::CSVUtils::csv_transpose:
+    file: lib/App/CSVUtils/csv_transpose.pm
+    version: 0.999_1
+recommends:
+  Sort::Sub: '0.120'
+requires:
+  Complete::Util: '0.608'
+  Data::Sah::Compiler::perl::TH::any: '0.914'
+  Data::Sah::Compiler::perl::TH::array: '0.914'
+  Data::Sah::Compiler::perl::TH::bool: '0.914'
+  Data::Sah::Compiler::perl::TH::code: '0.914'
+  Data::Sah::Compiler::perl::TH::hash: '0.914'
+  Data::Sah::Compiler::perl::TH::int: '0.914'
+  Data::Sah::Compiler::perl::TH::re: '0.914'
+  Data::Sah::Compiler::perl::TH::str: '0.914'
+  Data::Sah::Filter::perl::Path::expand_tilde_when_on_unix: '0'
+  Data::Sah::Filter::perl::Path::strip_slashes_when_on_unix: '0'
+  Exporter: '5.57'
+  File::Slurper::Dash: '0'
+  Getopt::Long: '2.50'
+  Hash::Subset: '0.007'
+  List::Util: '1.54'
+  Log::ger: '0.038'
+  Perinci::CmdLine::Any: '0.154'
+  Perinci::CmdLine::Lite: '1.924'
+  Perinci::Sub::Util: '0.470'
+  Perinci::Sub::XCompletion::sortsub_spec: '0'
+  Sah::Schema::filename: '0'
+  Sah::Schema::posint: '0'
+  Sah::Schema::true: '0'
+  Sah::Schema::uint: '0'
+  Sort::ByExample: '0'
+  Text::CSV_XS: '0'
+  Text::CSV_XS::TSV: '0'
+  Tie::IxHash: '0'
+  perl: '5.010001'
+  strict: '0'
+  warnings: '0'
+resources:
+  bugtracker: https://rt.cpan.org/Public/Dist/Display.html?Name=App-CSVUtils
+  homepage: https://metacpan.org/release/App-CSVUtils
+  repository: git://github.com/perlancar/perl-App-CSVUtils.git
+version: 0.999_1
+x_Dist_Zilla:
+  perl:
+    version: '5.034000'
+  plugins:
+    -
+      class: Dist::Zilla::Plugin::GenPericmdScript
+      name: 'GenPericmdScript csv-add-fields'
+      version: '0.424'
+    -
+      class: Dist::Zilla::Plugin::GenPericmdScript
+      name: 'GenPericmdScript csv-avg'
+      version: '0.424'
+    -
+      class: Dist::Zilla::Plugin::GenPericmdScript
+      name: 'GenPericmdScript csv-concat'
+      version: '0.424'
+    -
+      class: Dist::Zilla::Plugin::GenPericmdScript
+      name: 'GenPericmdScript csv-convert-to-hash'
+      version: '0.424'
+    -
+      class: Dist::Zilla::Plugin::GenPericmdScript
+      name: 'GenPericmdScript csv-csv'
+      version: '0.424'
+    -
+      class: Dist::Zilla::Plugin::GenPericmdScript
+      name: 'GenPericmdScript csv-delete-fields'
+      version: '0.424'
+    -
+      class: Dist::Zilla::Plugin::GenPericmdScript
+      name: 'GenPericmdScript csv-dump'
+      version: '0.424'
+    -
+      class: Dist::Zilla::Plugin::GenPericmdScript
+      name: 'GenPericmdScript csv-each-row'
+      version: '0.424'
+    -
+      class: Dist::Zilla::Plugin::GenPericmdScript
+      name: 'GenPericmdScript csv-fill-template'
+      version: '0.424'
+    -
+      class: Dist::Zilla::Plugin::GenPericmdScript
+      name: 'GenPericmdScript csv-freqtable'
+      version: '0.424'
+    -
+      class: Dist::Zilla::Plugin::GenPericmdScript
+      name: 'GenPericmdScript csv-gen'
+      version: '0.424'
+    -
+      class: Dist::Zilla::Plugin::GenPericmdScript
+      name: 'GenPericmdScript csv-get-cells'
+      version: '0.424'
+    -
+      class: Dist::Zilla::Plugin::GenPericmdScript
+      name: 'GenPericmdScript csv-grep'
+      version: '0.424'
+    -
+      class: Dist::Zilla::Plugin::GenPericmdScript
+      name: 'GenPericmdScript csv-list-field-names'
+      version: '0.424'
+    -
+      class: Dist::Zilla::Plugin::GenPericmdScript
+      name: 'GenPericmdScript csv-info'
+      version: '0.424'
+    -
+      class: Dist::Zilla::Plugin::GenPericmdScript
+      name: 'GenPericmdScript csv-lookup-fields'
+      version: '0.424'
+    -
+      class: Dist::Zilla::Plugin::GenPericmdScript
+      name: 'GenPericmdScript csv-map'
+      version: '0.424'
+    -
+      class: Dist::Zilla::Plugin::GenPericmdScript
+      name: 'GenPericmdScript csv-munge-field'
+      version: '0.424'
+    -
+      class: Dist::Zilla::Plugin::GenPericmdScript
+      name: 'GenPericmdScript csv-munge-row'
+      version: '0.424'
+    -
+      class: Dist::Zilla::Plugin::GenPericmdScript
+      name: 'GenPericmdScript csv-pick'
+      version: '0.424'
+    -
+      class: Dist::Zilla::Plugin::GenPericmdScript
+      name: 'GenPericmdScript csv-pick-fields'
+      version: '0.424'
+    -
+      class: Dist::Zilla::Plugin::GenPericmdScript
+      name: 'GenPericmdScript csv-pick-rows'
+      version: '0.424'
+    -
+      class: Dist::Zilla::Plugin::GenPericmdScript
+      name: 'GenPericmdScript csv-replace-newline'
+      version: '0.424'
+    -
+      class: Dist::Zilla::Plugin::GenPericmdScript
+      name: 'GenPericmdScript csv-select-fields'
+      version: '0.424'
+    -
+      class: Dist::Zilla::Plugin::GenPericmdScript
+      name: 'GenPericmdScript csv-select-rows'
+      version: '0.424'
+    -
+      class: Dist::Zilla::Plugin::GenPericmdScript
+      name: 'GenPericmdScript csv-setop'
+      version: '0.424'
+    -
+      class: Dist::Zilla::Plugin::GenPericmdScript
+      name: 'GenPericmdScript csv-shuf'
+      version: '0.424'
+    -
+      class: Dist::Zilla::Plugin::GenPericmdScript
+      name: 'GenPericmdScript csv-shuf-fields'
+      version: '0.424'
+    -
+      class: Dist::Zilla::Plugin::GenPericmdScript
+      name: 'GenPericmdScript csv-shuf-rows'
+      version: '0.424'
+    -
+      class: Dist::Zilla::Plugin::GenPericmdScript
+      name: 'GenPericmdScript csv-sort'
+      version: '0.424'
+    -
+      class: Dist::Zilla::Plugin::GenPericmdScript
+      name: 'GenPericmdScript csv-sort-rows'
+      version: '0.424'
+    -
+      class: Dist::Zilla::Plugin::GenPericmdScript
+      name: 'GenPericmdScript csv-sort-fields'
+      version: '0.424'
+    -
+      class: Dist::Zilla::Plugin::GenPericmdScript
+      name: 'GenPericmdScript csv-split'
+      version: '0.424'
+    -
+      class: Dist::Zilla::Plugin::GenPericmdScript
+      name: 'GenPericmdScript csv-sum'
+      version: '0.424'
+    -
+      class: Dist::Zilla::Plugin::GenPericmdScript
+      name: 'GenPericmdScript csv-transpose'
+      version: '0.424'
+    -
+      class: Dist::Zilla::Plugin::GenPericmdScript
+      name: 'GenPericmdScript csv2td'
+      version: '0.424'
+    -
+      class: Dist::Zilla::Plugin::GenPericmdScript
+      name: 'GenPericmdScript csv2vcf'
+      version: '0.424'
+    -
+      class: Dist::Zilla::Plugin::InsertExecsList
+      name: InsertExecsList
+      version: '0.02'
+    -
+      class: Dist::Zilla::Plugin::PERLANCAR::CheckPendingRelease
+      name: '@Author::PERLANCAR/PERLANCAR::CheckPendingRelease'
+      version: '0.001'
+    -
+      class: Dist::Zilla::Plugin::GatherDir
+      config:
+        Dist::Zilla::Plugin::GatherDir:
+          exclude_filename: []
+          exclude_match: []
+          follow_symlinks: 0
+          include_dotfiles: 0
+          prefix: ''
+          prune_directory: []
+          root: .
+      name: '@Author::PERLANCAR/@Filter/GatherDir'
+      version: '6.028'
+    -
+      class: Dist::Zilla::Plugin::PruneCruft
+      name: '@Author::PERLANCAR/@Filter/PruneCruft'
+      version: '6.028'
+    -
+      class: Dist::Zilla::Plugin::ManifestSkip
+      name: '@Author::PERLANCAR/@Filter/ManifestSkip'
+      version: '6.028'
+    -
+      class: Dist::Zilla::Plugin::MetaYAML
+      name: '@Author::PERLANCAR/@Filter/MetaYAML'
+      version: '6.028'
+    -
+      class: Dist::Zilla::Plugin::License
+      name: '@Author::PERLANCAR/@Filter/License'
+      version: '6.028'
+    -
+      class: Dist::Zilla::Plugin::PodCoverageTests
+      name: '@Author::PERLANCAR/@Filter/PodCoverageTests'
+      version: '6.028'
+    -
+      class: Dist::Zilla::Plugin::PodSyntaxTests
+      name: '@Author::PERLANCAR/@Filter/PodSyntaxTests'
+      version: '6.028'
+    -
+      class: Dist::Zilla::Plugin::ExtraTests
+      name: '@Author::PERLANCAR/@Filter/ExtraTests'
+      version: '6.028'
+    -
+      class: Dist::Zilla::Plugin::ExecDir
+      name: '@Author::PERLANCAR/@Filter/ExecDir'
+      version: '6.028'
+    -
+      class: Dist::Zilla::Plugin::ShareDir
+      name: '@Author::PERLANCAR/@Filter/ShareDir'
+      version: '6.028'
+    -
+      class: Dist::Zilla::Plugin::MakeMaker
+      config:
+        Dist::Zilla::Role::TestRunner:
+          default_jobs: 1
+      name: '@Author::PERLANCAR/@Filter/MakeMaker'
+      version: '6.028'
+    -
+      class: Dist::Zilla::Plugin::Manifest
+      name: '@Author::PERLANCAR/@Filter/Manifest'
+      version: '6.028'
+    -
+      class: Dist::Zilla::Plugin::ConfirmRelease
+      name: '@Author::PERLANCAR/@Filter/ConfirmRelease'
+      version: '6.028'
+    -
+      class: Dist::Zilla::Plugin::ExecDir
+      name: '@Author::PERLANCAR/ExecDir script'
+      version: '6.028'
+    -
+      class: Dist::Zilla::Plugin::PERLANCAR::BeforeBuild
+      name: '@Author::PERLANCAR/PERLANCAR::BeforeBuild'
+      version: '0.606'
+    -
+      class: Dist::Zilla::Plugin::Rinci::AbstractFromMeta
+      name: '@Author::PERLANCAR/Rinci::AbstractFromMeta'
+      version: '0.10'
+    -
+      class: Dist::Zilla::Plugin::PodnameFromFilename
+      name: '@Author::PERLANCAR/PodnameFromFilename'
+      version: '0.02'
+    -
+      class: Dist::Zilla::Plugin::PERLANCAR::EnsurePrereqToSpec
+      config:
+        Dist::Zilla::Role::ModuleMetadata:
+          Module::Metadata: '1.000037'
+          version: '0.006'
+      name: '@Author::PERLANCAR/PERLANCAR::EnsurePrereqToSpec'
+      version: '0.064'
+    -
+      class: Dist::Zilla::Plugin::PERLANCAR::MetaResources
+      name: '@Author::PERLANCAR/PERLANCAR::MetaResources'
+      version: '0.043'
+    -
+      class: Dist::Zilla::Plugin::CheckChangeLog
+      name: '@Author::PERLANCAR/CheckChangeLog'
+      version: '0.05'
+    -
+      class: Dist::Zilla::Plugin::CheckMetaResources
+      name: '@Author::PERLANCAR/CheckMetaResources'
+      version: '0.001'
+    -
+      class: Dist::Zilla::Plugin::CheckSelfDependency
+      config:
+        Dist::Zilla::Plugin::CheckSelfDependency:
+          finder:
+            - ':InstallModules'
+        Dist::Zilla::Role::ModuleMetadata:
+          Module::Metadata: '1.000037'
+          version: '0.006'
+      name: '@Author::PERLANCAR/CheckSelfDependency'
+      version: '0.011'
+    -
+      class: Dist::Zilla::Plugin::Git::Contributors
+      config:
+        Dist::Zilla::Plugin::Git::Contributors:
+          git_version: 2.25.1
+          include_authors: 0
+          include_releaser: 1
+          order_by: name
+          paths: []
+      name: '@Author::PERLANCAR/Git::Contributors'
+      version: '0.036'
+    -
+      class: Dist::Zilla::Plugin::CopyrightYearFromGit
+      name: '@Author::PERLANCAR/CopyrightYearFromGit'
+      version: '0.009'
+    -
+      class: Dist::Zilla::Plugin::IfBuilt
+      name: '@Author::PERLANCAR/IfBuilt'
+      version: '0.02'
+    -
+      class: Dist::Zilla::Plugin::MetaJSON
+      name: '@Author::PERLANCAR/MetaJSON'
+      version: '6.028'
+    -
+      class: Dist::Zilla::Plugin::MetaConfig
+      name: '@Author::PERLANCAR/MetaConfig'
+      version: '6.028'
+    -
+      class: Dist::Zilla::Plugin::MetaProvides::Package
+      config:
+        Dist::Zilla::Plugin::MetaProvides::Package:
+          finder_objects:
+            -
+              class: Dist::Zilla::Plugin::FinderCode
+              name: '@Author::PERLANCAR/MetaProvides::Package/AUTOVIV/:InstallModulesPM'
+              version: '6.028'
+          include_underscores: 0
+        Dist::Zilla::Role::MetaProvider::Provider:
+          $Dist::Zilla::Role::MetaProvider::Provider::VERSION: '2.002004'
+          inherit_missing: '1'
+          inherit_version: '1'
+          meta_noindex: '1'
+        Dist::Zilla::Role::ModuleMetadata:
+          Module::Metadata: '1.000037'
+          version: '0.006'
+      name: '@Author::PERLANCAR/MetaProvides::Package'
+      version: '2.004003'
+    -
+      class: Dist::Zilla::Plugin::PERLANCAR::Authority
+      name: '@Author::PERLANCAR/PERLANCAR::Authority'
+      version: '0.001'
+    -
+      class: Dist::Zilla::Plugin::OurDate
+      name: '@Author::PERLANCAR/OurDate'
+      version: '0.03'
+    -
+      class: Dist::Zilla::Plugin::OurDist
+      name: '@Author::PERLANCAR/OurDist'
+      version: '0.02'
+    -
+      class: Dist::Zilla::Plugin::OurPkgVersion
+      name: '@Author::PERLANCAR/OurPkgVersion'
+      version: '0.21'
+    -
+      class: Dist::Zilla::Plugin::PodWeaver
+      config:
+        Dist::Zilla::Plugin::PodWeaver:
+          finder:
+            - ':InstallModules'
+            - ':ExecFiles'
+          plugins:
+            -
+              class: Pod::Weaver::Plugin::EnsurePod5
+              name: '@CorePrep/EnsurePod5'
+              version: '4.017'
+            -
+              class: Pod::Weaver::Plugin::H1Nester
+              name: '@CorePrep/H1Nester'
+              version: '4.017'
+            -
+              class: Pod::Weaver::Section::Name
+              name: '@Author::PERLANCAR/Name'
+              version: '4.017'
+            -
+              class: Pod::Weaver::Section::Version
+              name: '@Author::PERLANCAR/Version'
+              version: '4.017'
+            -
+              class: Pod::Weaver::Section::Region
+              name: '@Author::PERLANCAR/prelude'
+              version: '4.017'
+            -
+              class: Pod::Weaver::Section::Generic
+              name: SYNOPSIS
+              version: '4.017'
+            -
+              class: Pod::Weaver::Section::Generic
+              name: DESCRIPTION
+              version: '4.017'
+            -
+              class: Pod::Weaver::Section::Generic
+              name: OVERVIEW
+              version: '4.017'
+            -
+              class: Pod::Weaver::Section::Collect
+              name: ATTRIBUTES
+              version: '4.017'
+            -
+              class: Pod::Weaver::Section::Collect
+              name: METHODS
+              version: '4.017'
+            -
+              class: Pod::Weaver::Section::Collect
+              name: FUNCTIONS
+              version: '4.017'
+            -
+              class: Pod::Weaver::Section::Leftovers
+              name: '@Author::PERLANCAR/Leftovers'
+              version: '4.017'
+            -
+              class: Pod::Weaver::Section::Region
+              name: '@Author::PERLANCAR/postlude'
+              version: '4.017'
+            -
+              class: Pod::Weaver::Section::Completion::GetoptLongComplete
+              name: '@Author::PERLANCAR/Completion::GetoptLongComplete'
+              version: '0.08'
+            -
+              class: Pod::Weaver::Section::Completion::GetoptLongSubcommand
+              name: '@Author::PERLANCAR/Completion::GetoptLongSubcommand'
+              version: '0.04'
+            -
+              class: Pod::Weaver::Section::Completion::GetoptLongMore
+              name: '@Author::PERLANCAR/Completion::GetoptLongMore'
+              version: '0.001'
+            -
+              class: Pod::Weaver::Section::Homepage::DefaultCPAN
+              name: '@Author::PERLANCAR/Homepage::DefaultCPAN'
+              version: '0.05'
+            -
+              class: Pod::Weaver::Section::Source::DefaultGitHub
+              name: '@Author::PERLANCAR/Source::DefaultGitHub'
+              version: '0.07'
+            -
+              class: Pod::Weaver::Section::Bugs::DefaultRT
+              name: '@Author::PERLANCAR/Bugs::DefaultRT'
+              version: '0.06'
+            -
+              class: Pod::Weaver::Section::Authors
+              name: '@Author::PERLANCAR/Authors'
+              version: '4.017'
+            -
+              class: Pod::Weaver::Section::Contributors
+              name: '@Author::PERLANCAR/Contributors'
+              version: '0.009'
+            -
+              class: Pod::Weaver::Section::PERLANCAR::Contributing
+              name: '@Author::PERLANCAR/PERLANCAR/Contributing'
+              version: '0.293'
+            -
+              class: Pod::Weaver::Section::Legal
+              name: '@Author::PERLANCAR/Legal'
+              version: '4.017'
+            -
+              class: Pod::Weaver::Plugin::Rinci
+              name: '@Author::PERLANCAR/Rinci'
+              version: '0.784'
+            -
+              class: Pod::Weaver::Plugin::AppendPrepend
+              name: '@Author::PERLANCAR/AppendPrepend'
+              version: '0.01'
+            -
+              class: Pod::Weaver::Plugin::EnsureUniqueSections
+              name: '@Author::PERLANCAR/EnsureUniqueSections'
+              version: '0.163250'
+            -
+              class: Pod::Weaver::Plugin::SingleEncoding
+              name: '@Author::PERLANCAR/SingleEncoding'
+              version: '4.017'
+            -
+              class: Pod::Weaver::Plugin::PERLANCAR::SortSections
+              name: '@Author::PERLANCAR/PERLANCAR::SortSections'
+              version: '0.082'
+      name: '@Author::PERLANCAR/PodWeaver'
+      version: '4.008'
+    -
+      class: Dist::Zilla::Plugin::PruneFiles
+      name: '@Author::PERLANCAR/PruneFiles'
+      version: '6.028'
+    -
+      class: Dist::Zilla::Plugin::Pod2Readme
+      name: '@Author::PERLANCAR/Pod2Readme'
+      version: '0.004'
+    -
+      class: Dist::Zilla::Plugin::Rinci::AddPrereqs
+      name: '@Author::PERLANCAR/Rinci::AddPrereqs'
+      version: '0.145'
+    -
+      class: Dist::Zilla::Plugin::Rinci::AddToDb
+      name: '@Author::PERLANCAR/Rinci::AddToDb'
+      version: '0.020'
+    -
+      class: Dist::Zilla::Plugin::Rinci::EmbedValidator
+      name: '@Author::PERLANCAR/Rinci::EmbedValidator'
+      version: '0.251'
+    -
+      class: Dist::Zilla::Plugin::SetScriptShebang
+      name: '@Author::PERLANCAR/SetScriptShebang'
+      version: '0.01'
+    -
+      class: Dist::Zilla::Plugin::Test::Compile
+      config:
+        Dist::Zilla::Plugin::Test::Compile:
+          bail_out_on_fail: '0'
+          fail_on_warning: author
+          fake_home: 0
+          filename: t/00-compile.t
+          module_finder:
+            - ':InstallModules'
+          needs_display: 0
+          phase: test
+          script_finder:
+            - ':PerlExecFiles'
+          skips: []
+          switch: []
+      name: '@Author::PERLANCAR/Test::Compile'
+      version: '2.058'
+    -
+      class: Dist::Zilla::Plugin::Test::Perl::Critic::Subset
+      config:
+        Dist::Zilla::Plugin::Test::Perl::Critic::Subset:
+          finder:
+            - ':ExecFiles'
+            - ':InstallModules'
+            - ':TestFiles'
+      name: '@Author::PERLANCAR/Test::Perl::Critic::Subset'
+      version: 3.001.006
+    -
+      class: Dist::Zilla::Plugin::Test::Rinci
+      name: '@Author::PERLANCAR/Test::Rinci'
+      version: '0.040'
+    -
+      class: Dist::Zilla::Plugin::StaticInstall
+      config:
+        Dist::Zilla::Plugin::StaticInstall:
+          dry_run: 0
+          mode: on
+      name: '@Author::PERLANCAR/StaticInstall'
+      version: '0.012'
+    -
+      class: Dist::Zilla::Plugin::EnsureSQLSchemaVersionedTest
+      name: '@Author::PERLANCAR/EnsureSQLSchemaVersionedTest'
+      version: '0.03'
+    -
+      class: Dist::Zilla::Plugin::Acme::CPANModules::Blacklist
+      name: '@Author::PERLANCAR/Acme::CPANModules::Blacklist'
+      version: '0.001'
+    -
+      class: Dist::Zilla::Plugin::Prereqs::EnsureVersion
+      name: '@Author::PERLANCAR/Prereqs::EnsureVersion'
+      version: '0.050'
+    -
+      class: Dist::Zilla::Plugin::Prereqs::CheckCircular
+      name: '@Author::PERLANCAR/Prereqs::CheckCircular'
+      version: '0.006'
+    -
+      class: Dist::Zilla::Plugin::UploadToCPAN::WWWPAUSESimple
+      name: '@Author::PERLANCAR/UploadToCPAN::WWWPAUSESimple'
+      version: '0.04'
+    -
+      class: Dist::Zilla::Plugin::Prereqs
+      config:
+        Dist::Zilla::Plugin::Prereqs:
+          phase: test
+          type: requires
+      name: TestRequires
+      version: '6.028'
+    -
+      class: Dist::Zilla::Plugin::Prereqs
+      config:
+        Dist::Zilla::Plugin::Prereqs:
+          phase: runtime
+          type: requires
+      name: Prereqs
+      version: '6.028'
+    -
+      class: Dist::Zilla::Plugin::Prereqs
+      config:
+        Dist::Zilla::Plugin::Prereqs:
+          phase: runtime
+          type: recommends
+      name: RuntimeRecommends
+      version: '6.028'
+    -
+      class: Dist::Zilla::Plugin::Prereqs
+      config:
+        Dist::Zilla::Plugin::Prereqs:
+          phase: develop
+          type: x_spec
+      name: DevelopX_spec
+      version: '6.028'
+    -
+      class: Dist::Zilla::Plugin::FinderCode
+      name: ':InstallModules'
+      version: '6.028'
+    -
+      class: Dist::Zilla::Plugin::FinderCode
+      name: ':IncModules'
+      version: '6.028'
+    -
+      class: Dist::Zilla::Plugin::FinderCode
+      name: ':TestFiles'
+      version: '6.028'
+    -
+      class: Dist::Zilla::Plugin::FinderCode
+      name: ':ExtraTestFiles'
+      version: '6.028'
+    -
+      class: Dist::Zilla::Plugin::FinderCode
+      name: ':ExecFiles'
+      version: '6.028'
+    -
+      class: Dist::Zilla::Plugin::FinderCode
+      name: ':PerlExecFiles'
+      version: '6.028'
+    -
+      class: Dist::Zilla::Plugin::FinderCode
+      name: ':ShareFiles'
+      version: '6.028'
+    -
+      class: Dist::Zilla::Plugin::FinderCode
+      name: ':MainModule'
+      version: '6.028'
+    -
+      class: Dist::Zilla::Plugin::FinderCode
+      name: ':AllFiles'
+      version: '6.028'
+    -
+      class: Dist::Zilla::Plugin::FinderCode
+      name: ':NoFiles'
+      version: '6.028'
+    -
+      class: Dist::Zilla::Plugin::FinderCode
+      name: '@Author::PERLANCAR/MetaProvides::Package/AUTOVIV/:InstallModulesPM'
+      version: '6.028'
+  zilla:
+    class: Dist::Zilla::Dist::Builder
+    config:
+      is_trial: '1'
+    version: '6.028'
+x_authority: cpan:PERLANCAR
+x_contributors:
+  - 'Adam Hopkins <violapiratejunky@gmail.com>'
+x_generated_by_perl: v5.34.0
+x_serialization_backend: 'YAML::Tiny version 1.73'
+x_spdx_expression: 'Artistic-1.0-Perl OR GPL-1.0-or-later'
+x_static_install: 1
