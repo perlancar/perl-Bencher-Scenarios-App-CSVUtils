@@ -1,4 +1,4 @@
-package Bencher::Scenarios::App::CSVUtils;
+package Bencher::ScenarioBundle::App::CSVUtils;
 
 use strict;
 
